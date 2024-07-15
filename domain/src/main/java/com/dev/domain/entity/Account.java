@@ -48,8 +48,8 @@ public class Account {
                                  final String email,
                                  final String password,
                                  final boolean isAdmin){
-        final var currentDate = LocalDateTime.now();
         final var currentIdentifier = AccountIdentifier.unique();
+        final var currentDate = LocalDateTime.now();
         return new Account(
                 currentIdentifier,
                 firstName,
@@ -91,9 +91,30 @@ public class Account {
         );
     }
 
-    public Account inactive(){
+    public Account update(final String firstName,
+                       final String lastName,
+                       final String email,
+                       final String password){
+        final var currentDate = LocalDateTime.now();
         return new Account(
-                getAccountIdentifier(),
+                getIdentifier(),
+                firstName,
+                lastName,
+                email,
+                password,
+                isActive(),
+                isAdmin(),
+                isConfirmed(),
+                getCreatedAt(),
+                currentDate,
+                getLastAccess()
+        );
+    }
+
+    public Account inactiveAccount(){
+        final var currentDate = LocalDateTime.now();
+        return new Account(
+                getIdentifier(),
                 getFirstName(),
                 getLastName(),
                 getEmail(),
@@ -102,12 +123,46 @@ public class Account {
                 isAdmin(),
                 isConfirmed(),
                 getCreatedAt(),
-                getUpdatedAt(),
+                currentDate,
                 getLastAccess()
         );
     }
 
-    public AccountIdentifier getAccountIdentifier() {
+    public Account confirmeAccount(){
+        final var currentDate = LocalDateTime.now();
+        return new Account(
+                getIdentifier(),
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPassword(),
+                isActive(),
+                isAdmin(),
+                true,
+                getCreatedAt(),
+                currentDate,
+                getLastAccess()
+        );
+    }
+
+    public Account lastAccess(){
+        final var currentDate = LocalDateTime.now();
+        return new Account(
+                getIdentifier(),
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPassword(),
+                isActive(),
+                isAdmin(),
+                isConfirmed,
+                getCreatedAt(),
+                currentDate,
+                currentDate
+        );
+    }
+
+    public AccountIdentifier getIdentifier() {
         return accountIdentifier;
     }
 
