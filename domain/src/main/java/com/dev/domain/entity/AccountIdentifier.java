@@ -14,7 +14,7 @@ public class AccountIdentifier extends Identifier {
         return new AccountIdentifier(UUID.randomUUID().toString());
     }
     @Override
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 }

@@ -1,7 +1,7 @@
 package com.dev.domain.value.object;
 
 import com.dev.domain.ValueObject;
-import com.dev.lib.exception.template.InvalidParameterException;
+import com.dev.domain.exception.template.InvalidParameterException;
 
 import java.util.Objects;
 

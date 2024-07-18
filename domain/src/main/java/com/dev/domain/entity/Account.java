@@ -1,11 +1,12 @@
 package com.dev.domain.entity;
 
+import com.dev.domain.AbstractAggregate;
 import com.dev.domain.value.object.Email;
 import com.dev.domain.value.object.Password;
 
 import java.time.LocalDateTime;
 
-public class Account {
+public class Account extends AbstractAggregate {
 
     private final AccountIdentifier accountIdentifier;
     private final String firstName;
@@ -19,7 +20,7 @@ public class Account {
     private final LocalDateTime updatedAt;
     private final LocalDateTime lastAccess;
 
-    private Account(final AccountIdentifier accountIdentifier,
+    private Account(final String accountIdentifier,
                     final String firstName,
                     final String lastName,
                     final String email,
@@ -30,7 +31,8 @@ public class Account {
                     final LocalDateTime createdAt,
                     final LocalDateTime updatedAt,
                     final LocalDateTime lastAccess) {
-        this.accountIdentifier = accountIdentifier;
+        super();
+        this.accountIdentifier = new AccountIdentifier(accountIdentifier);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = new Email(email);
@@ -51,7 +53,7 @@ public class Account {
         final var currentIdentifier = AccountIdentifier.unique();
         final var currentDate = LocalDateTime.now();
         return new Account(
-                currentIdentifier,
+                currentIdentifier.value(),
                 firstName,
                 lastName,
                 email,
@@ -65,7 +67,7 @@ public class Account {
         );
     }
 
-    public static Account restore(final AccountIdentifier identifier,
+    public static Account restore(final String identifier,
                                   final String firstName,
                                   final String lastName,
                                   final String email,
@@ -92,9 +94,9 @@ public class Account {
     }
 
     public Account update(final String firstName,
-                       final String lastName,
-                       final String email,
-                       final String password){
+                          final String lastName,
+                          final String email,
+                          final String password){
         final var currentDate = LocalDateTime.now();
         return new Account(
                 getIdentifier(),
@@ -145,7 +147,7 @@ public class Account {
         );
     }
 
-    public Account lastAccess(){
+    public Account updateLastAccess(){
         final var currentDate = LocalDateTime.now();
         return new Account(
                 getIdentifier(),
@@ -162,8 +164,8 @@ public class Account {
         );
     }
 
-    public AccountIdentifier getIdentifier() {
-        return accountIdentifier;
+    public String getIdentifier() {
+        return accountIdentifier.value();
     }
 
     public String getFirstName() {

@@ -1,0 +1,36 @@
+############
+## CONFIG ##
+############
+spring:
+  ##############
+  ## DATABASE ##
+  ##############
+  datasource:
+    url: jdbc:postgresql://${DB:localhost}:${PORT_DB:5432}/notification?currentSchema=user_client_db
+    username: admin
+    password: ${PASSWORD_DB:admin}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  ###########
+  ## QUEUE ##
+  ###########
+  rabbitmq:
+    host: ${MQ:localhost}
+    port: ${PORT_MQ:5672}
+    username: guest
+    password: ${PASSWORD_MQ:guest}
+  main:
+    allow-bean-definition-overriding: true
+
+api:
+  integration:
+    queue:
+      send_confirmed_account: ${SEND_CONFIRMED_ACCOUNT:SEND_TO_CONFIRMED_ACCOUNT_QUEUE}

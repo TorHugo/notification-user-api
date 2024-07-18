@@ -1,7 +1,7 @@
 package com.dev.domain.entity;
 
-import com.dev.lib.enums.MessageErrorEnum;
-import com.dev.lib.exception.template.InvalidParameterException;
+import com.dev.domain.enums.MessageErrorEnum;
+import com.dev.domain.exception.template.InvalidParameterException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDateTime;
 
-import static com.dev.lib.enums.MessagePropertiesEnum.*;
+import static com.dev.domain.entity.enums.MessagePropertiesEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
@@ -58,7 +58,7 @@ class AccountTest {
         final var currentDate = LocalDateTime.now();
         // When
         final var account = Account.restore(
-                identifier,
+                identifier.value(),
                 firstName,
                 lastName,
                 correctEmail,
@@ -72,7 +72,7 @@ class AccountTest {
 
         // Then
         assertNotNull(account, TO_NOT_NULL.getMessage());
-        assertEquals(identifier, account.getIdentifier(), TO_EQUALS.getMessage());
+        assertEquals(identifier.value(), account.getIdentifier(), TO_EQUALS.getMessage());
         assertEquals(firstName, account.getFirstName(), TO_EQUALS.getMessage());
         assertEquals(lastName, account.getLastName(), TO_EQUALS.getMessage());
         assertEquals(correctEmail, account.getEmail(), TO_EQUALS.getMessage());
@@ -198,7 +198,7 @@ class AccountTest {
         );
 
         // When
-        final var lastAccess = account.lastAccess();
+        final var lastAccess = account.updateLastAccess();
 
         // Then
         assertNotNull(account, TO_NOT_NULL.getMessage());
@@ -220,7 +220,7 @@ class AccountTest {
     @DisplayName("Should throw exception when invalid emails!")
     void shouldThrowExceptionWhenInvalidEmail() {
         // Given
-        final var expectedMessage = MessageErrorEnum.INVALID_PARAMETER_EXCEPTION.getMessage().concat(incorrectEmail);
+        final var expectedMessage = MessageErrorEnum.INVALID_PARAMETER_EXCEPTION.message().concat(incorrectEmail);
 
         // When
         final var exception = assertThrows(InvalidParameterException.class, ()->
@@ -241,7 +241,7 @@ class AccountTest {
     @ValueSource(strings = {"size", "password", "PASSWORD", "Password"})
     void shouldThrowExceptionBasedOnPasswordCriteria(final String incorrectPassword) {
         // Given
-        final var expectedMessage = MessageErrorEnum.INVALID_PARAMETER_EXCEPTION.getMessage()
+        final var expectedMessage = MessageErrorEnum.INVALID_PARAMETER_EXCEPTION.message()
                 .concat(getExpectedMessageForPassword(incorrectPassword));
 
         // When
