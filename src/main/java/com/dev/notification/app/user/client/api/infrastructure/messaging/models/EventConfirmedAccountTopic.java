@@ -1,15 +1,14 @@
 package com.dev.notification.app.user.client.api.infrastructure.messaging.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record EventConfirmedAccountTopic(
-        String email,
-        String hashConfirmed,
-        boolean confirmed,
-        @JsonProperty("expiration_date") LocalDateTime expirationDate
+        String to,
+        String template,
+        List<Parameter> parameters
 ) {
 }
