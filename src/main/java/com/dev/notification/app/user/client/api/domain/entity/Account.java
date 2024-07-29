@@ -88,4 +88,8 @@ public class Account {
                 updatedAt
         );
     }
+
+    public String getEmail() {
+        return email.value();
+    }
 }

@@ -12,7 +12,7 @@ public class AccountMapper {
                 account.getIdentifier(),
                 account.getFirstName(),
                 account.getLastName(),
-                account.getEmail().value(),
+                account.getEmail(),
                 account.getPassword(),
                 account.isActive(),
                 account.isAdmin(),
