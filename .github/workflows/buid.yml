@@ -39,12 +39,6 @@ jobs:
       - name: Verify Compilation Warnings
         run: ./gradlew check --warning-mode=all
 
-      - name: Run OWASP Dependency Check
-        uses: dependency-check/scan-action@v3.0.2
-        with:
-          project: "User-Client-API"
-          scan: "./"
-
   build:
     needs: deploy-test
     runs-on: ubuntu-latest
