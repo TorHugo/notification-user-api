@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.domain.entity;
 
+import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.value.object.Email;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
 import lombok.Getter;
@@ -94,6 +95,7 @@ public class Account {
     }
 
     public void isConfirmedAccount(){
+        if (confirmed) throw new DomainException("This account is already confirmed!");
         this.confirmed = true;
         this.updatedAt = LocalDateTime.now();
     }

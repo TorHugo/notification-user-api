@@ -10,7 +10,7 @@ public class EventMapper {
         return new EventEntity(
                 event.getIdentifier(),
                 event.getAggregateIdentifier(),
-                event.getTransaction().json(),
+                event.getTransaction().value(),
                 event.getEventType(),
                 event.getCreatedAt()
         );

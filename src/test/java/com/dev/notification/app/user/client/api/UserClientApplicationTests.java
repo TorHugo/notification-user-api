@@ -1,4 +1,4 @@
-package com.dev.lib;
+package com.dev.notification.app.user.client.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

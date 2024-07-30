@@ -10,7 +10,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         if (password == null)
-            throw new DomainException("Password cannot be null");
+            throw new DomainException("Password cannot be null!");
         if (password.length() < 8)
             throw new DomainException("This password must be at least 8 characters.");
         if (!password.matches(".*[A-Z].*"))

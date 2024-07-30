@@ -1,5 +1,5 @@
 
-package com.dev.lib.enums;
+package com.dev.notification.app.user.client.api.enums;
 
 public enum MessagePropertiesEnum {
     TO_EQUALS("Must values be to equals!"),

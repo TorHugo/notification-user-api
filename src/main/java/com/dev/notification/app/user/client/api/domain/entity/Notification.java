@@ -31,13 +31,15 @@ public class Notification {
     }
 
     public static Notification create(
-            final String to,
+            final String contact,
             final String template,
             final List<Parameter> parameters
     ){
+        if (Objects.isNull(contact) || contact.isEmpty()) throw new DomainException("Contact must be not null or empty!");
+        if (Objects.isNull(template) || template.isEmpty()) throw new DomainException("Template must be not null or empty!");
         return new Notification(
                 IdentifierUtils.unique(),
-                to,
+                contact,
                 template,
                 parameters,
                 LocalDateTime.now()
@@ -46,14 +48,14 @@ public class Notification {
 
     public static Notification restore(
             final String identifier,
-            final String to,
+            final String contact,
             final String template,
             final List<Parameter> parameters,
             final LocalDateTime createdAt
     ){
         return new Notification(
                 identifier,
-                to,
+                contact,
                 template,
                 parameters,
                 createdAt

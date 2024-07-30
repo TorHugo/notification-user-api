@@ -1,22 +1,22 @@
 package com.dev.notification.app.user.client.api.domain.entity;
 
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
+import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
 import com.dev.notification.app.user.client.api.domain.value.object.Transaction;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
-@Setter
 public class Event {
 
-    private String identifier;
-    private String aggregateIdentifier;
-    private EventType eventType;
-    private Transaction transaction;
-    private LocalDateTime createdAt;
+    private final String identifier;
+    private final String aggregateIdentifier;
+    private final EventType eventType;
+    private final Transaction transaction;
+    private final LocalDateTime createdAt;
 
     private Event(final String identifier,
                   final String aggregateIdentifier,
@@ -35,6 +35,7 @@ public class Event {
             final EventType eventType,
             final String transaction
     ){
+        if (Objects.isNull(aggregateIdentifier) || aggregateIdentifier.isEmpty()) throw new DomainException("This aggregate identifier must be not null or empty!");
         return new Event(IdentifierUtils.unique(), aggregateIdentifier, eventType, transaction, LocalDateTime.now());
     }
 
