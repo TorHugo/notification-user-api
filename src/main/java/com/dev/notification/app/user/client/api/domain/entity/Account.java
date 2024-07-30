@@ -16,9 +16,9 @@ public class Account {
     private final String lastName;
     private final Email email;
     private final String password;
-    private final boolean isActive;
-    private final boolean isAdmin;
-    private final boolean isConfirmed;
+    private final boolean active;
+    private final boolean admin;
+    private final boolean confirmed;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
@@ -27,9 +27,9 @@ public class Account {
                     final String lastName,
                     final String email,
                     final String password,
-                    final boolean isActive,
-                    final boolean isAdmin,
-                    final boolean isConfirmed,
+                    final boolean active,
+                    final boolean admin,
+                    final boolean confirmed,
                     final LocalDateTime createdAt,
                     final LocalDateTime updatedAt) {
         this.identifier = identifier;
@@ -37,9 +37,9 @@ public class Account {
         this.lastName = lastName;
         this.email = new Email(email);
         this.password = password;
-        this.isActive = isActive;
-        this.isAdmin = isAdmin;
-        this.isConfirmed = isConfirmed;
+        this.active = active;
+        this.admin = admin;
+        this.confirmed = confirmed;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -48,7 +48,7 @@ public class Account {
                                  final String lastName,
                                  final String email,
                                  final String password,
-                                 final boolean isAdmin){
+                                 final boolean admin){
         final var identifier = IdentifierUtils.unique();
         final var currentDate = LocalDateTime.now();
         return new Account(
@@ -58,7 +58,7 @@ public class Account {
                 email,
                 password,
                 true,
-                isAdmin,
+                admin,
                 false,
                 currentDate,
                 null
@@ -70,9 +70,9 @@ public class Account {
                                   final String lastName,
                                   final String email,
                                   final String password,
-                                  final boolean isActive,
-                                  final boolean isAdmin,
-                                  final boolean isConfirmed,
+                                  final boolean active,
+                                  final boolean admin,
+                                  final boolean confirmed,
                                   final LocalDateTime createdAt,
                                   final LocalDateTime updatedAt){
         return new Account(
@@ -81,9 +81,9 @@ public class Account {
                 lastName,
                 email,
                 password,
-                isActive,
-                isAdmin,
-                isConfirmed,
+                active,
+                admin,
+                confirmed,
                 createdAt,
                 updatedAt
         );
@@ -91,5 +91,24 @@ public class Account {
 
     public String getEmail() {
         return email.value();
+    }
+
+    public Account isConfirmedAccount(){
+        return new Account(
+                getIdentifier(),
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPassword(),
+                isActive(),
+                isAdmin(),
+                true,
+                getCreatedAt(),
+                LocalDateTime.now()
+        );
+    }
+
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
     }
 }

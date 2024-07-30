@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.infrastructure.repository.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -19,8 +20,9 @@ import java.time.LocalDateTime;
 public class NotificationEntity {
     @Id
     private String identifier;
-    private String toAccount;
+    private String contact;
     private String template;
+    @Column(columnDefinition = "TEXT")
     private String parameters;
     private LocalDateTime createdAt;
 }

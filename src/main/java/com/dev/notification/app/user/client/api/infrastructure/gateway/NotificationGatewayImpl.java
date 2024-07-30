@@ -19,4 +19,10 @@ public class NotificationGatewayImpl implements NotificationGateway {
         notificationRepository.save(entity);
         return notificationMapper.toAggregate(entity);
     }
+
+    @Override
+    public Notification findByAccount(final String contact) {
+        final var entity = notificationRepository.findByContact(contact);
+        return notificationMapper.toAggregate(entity);
+    }
 }

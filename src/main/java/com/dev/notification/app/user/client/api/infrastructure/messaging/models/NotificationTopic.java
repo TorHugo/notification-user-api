@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record EventConfirmedAccountTopic(
+public record NotificationTopic(
         String to,
         String template,
         List<Parameter> parameters

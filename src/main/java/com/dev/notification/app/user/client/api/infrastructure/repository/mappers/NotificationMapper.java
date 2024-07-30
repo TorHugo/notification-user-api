@@ -4,9 +4,11 @@ import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.repository.models.NotificationEntity;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Component
@@ -17,7 +19,7 @@ public class NotificationMapper {
     public NotificationEntity fromAggregate(final Notification aggregate) {
         return new NotificationEntity(
                 aggregate.getIdentifier(),
-                aggregate.getTo(),
+                aggregate.getContact(),
                 aggregate.getTemplate(),
                 gson.toJson(aggregate.getParameters()),
                 aggregate.getCreatedAt()
@@ -25,13 +27,15 @@ public class NotificationMapper {
     }
 
     public Notification toAggregate(final NotificationEntity entity){
-        final List<Parameter> parameters = gson.fromJson(entity.getParameters(), List.class);
+        final var parameterListType = new TypeToken<List<Parameter>>() {}.getType();
+        final List<Parameter> parameters = gson.fromJson(entity.getParameters(), parameterListType);
         return Notification.restore(
                 entity.getIdentifier(),
-                entity.getToAccount(),
+                entity.getContact(),
                 entity.getTemplate(),
                 parameters,
                 entity.getCreatedAt()
         );
     }
+
 }

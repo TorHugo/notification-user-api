@@ -5,7 +5,7 @@ import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import lombok.Builder;
 
 @Builder
-public record PublishingEventCreateAccount(
+public record EventCreateAccountPublishing(
         Account account,
         Notification notification
 ) {

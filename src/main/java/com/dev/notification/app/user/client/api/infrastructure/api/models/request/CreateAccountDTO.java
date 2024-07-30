@@ -1,4 +1,4 @@
-package com.dev.notification.app.user.client.api.infrastructure.api.models;
+package com.dev.notification.app.user.client.api.infrastructure.api.models.request;
 
 import com.dev.notification.app.user.client.api.domain.Password;
 import com.fasterxml.jackson.annotation.JsonProperty;

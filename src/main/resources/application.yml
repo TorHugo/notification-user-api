@@ -31,8 +31,9 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: localhost:9092
     producer:
-      create-account-event: CreateAccountEventTopic
-      confirmed-account-event: ConfirmedAccountEventTopic
+      send-event-create-account-topic: CreateAccountEventTopic
+      send-event-notification-topic: NotificationEventTopic
+      send-event-confirmed-account-topic: ConfirmedAccountEventTopic
 
   integration:
     email-token:

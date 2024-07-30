@@ -4,6 +4,7 @@ import com.dev.notification.app.user.client.api.domain.entity.Event;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
 import com.dev.notification.app.user.client.api.domain.exception.template.EventException;
 import com.dev.notification.app.user.client.api.domain.gateway.EventGateway;
+import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedAccountEvent;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.CreateAccountEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,6 @@ public class AccountEventListener {
 
     @EventListener
     public void handlerCreateAccount(final CreateAccountEvent createAccountEvent){
-        log.info("Event: {}", createAccountEvent);
         try {
             final var event = Event.create(
                     createAccountEvent.getAggregateIdentifier(),
@@ -27,7 +27,20 @@ public class AccountEventListener {
             );
             eventGateway.save(event);
         } catch (final Exception e) {
-            log.error("Exception creating event: {}", e.getMessage());
+            throw new EventException("Error creating event!");
+        }
+    }
+
+    @EventListener
+    public void handlerCreateAccount(final ConfirmedAccountEvent createAccountEvent){
+        try {
+            final var event = Event.create(
+                    createAccountEvent.getAggregateIdentifier(),
+                    EventType.CONFIRMED_ACCOUNT_EVENT,
+                    createAccountEvent.getTransaction()
+            );
+            eventGateway.save(event);
+        } catch (final Exception e) {
             throw new EventException("Error creating event!");
         }
     }

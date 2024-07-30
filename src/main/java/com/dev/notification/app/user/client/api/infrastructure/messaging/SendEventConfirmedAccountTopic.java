@@ -1,6 +1,6 @@
 package com.dev.notification.app.user.client.api.infrastructure.messaging;
 
-import com.dev.notification.app.user.client.api.infrastructure.messaging.models.EventConfirmedAccountTopic;
+import com.dev.notification.app.user.client.api.infrastructure.messaging.models.ConfirmedAccountTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.producer.KafkaProducerService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,10 @@ public class SendEventConfirmedAccountTopic {
     private final KafkaProducerService kafkaProducerService;
     private final Gson gson;
 
-    @Value("${spring.kafka.producer.confirmed-account-event}")
+    @Value("${spring.kafka.producer.send-event-confirmed-account-topic}")
     private String topic;
 
-    public void execute(final EventConfirmedAccountTopic message){
+    public void execute(final ConfirmedAccountTopic message){
         kafkaProducerService.sendMessage(topic, gson.toJson(message));
     }
 }

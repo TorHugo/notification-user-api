@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, String> {
+    NotificationEntity findByContact(final String contact);
 }
