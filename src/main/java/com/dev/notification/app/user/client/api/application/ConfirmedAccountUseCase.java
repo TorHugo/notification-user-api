@@ -16,11 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+
 @Component
 @RequiredArgsConstructor
 public class ConfirmedAccountUseCase {
     private final AccountGateway accountGateway;
     private final NotificationGateway notificationGateway;
+    private final SendNotificationUseCase sendNotificationUseCase;
     private final PublishingService<EventConfirmedAccountPublishing> publishingService;
 
     public void execute(final ConfirmedAccountDTO dto){
@@ -29,11 +31,8 @@ public class ConfirmedAccountUseCase {
         final var account = accountGateway.findAccountByEmailWithThrows(dto.email());
         account.isConfirmedAccount();
         accountGateway.saveToAccount(account);
-        final var welcomeNotification = Notification.create(account.getEmail(), "welcome", List.of(new Parameter("name", account.getFullName())));
-        publishingService.publish(EventConfirmedAccountPublishing.builder()
-                    .account(account)
-                    .notification(welcomeNotification)
-                .build());
+        sendNotificationUseCase.execute(account.getEmail(), "welcome", List.of(new Parameter("name", account.getFullName())));
+        publishingService.publish(EventConfirmedAccountPublishing.builder().account(account).build());
     }
 
     private void validate(final Notification notification,

@@ -2,9 +2,8 @@ package com.dev.notification.app.user.client.api.infrastructure.service;
 
 import com.dev.notification.app.user.client.api.application.FindAccountUseCase;
 import com.dev.notification.app.user.client.api.application.SaveAccountUseCase;
-import com.dev.notification.app.user.client.api.application.SaveNotificationUseCase;
+import com.dev.notification.app.user.client.api.application.SendNotificationUseCase;
 import com.dev.notification.app.user.client.api.domain.entity.Account;
-import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.domain.service.AccountService;
 import com.dev.notification.app.user.client.api.domain.service.EncryptionService;
@@ -26,7 +25,7 @@ import java.util.Objects;
 public class AccountServiceImpl implements AccountService {
     private final FindAccountUseCase findAccountUseCase;
     private final SaveAccountUseCase saveAccountUseCase;
-    private final SaveNotificationUseCase saveNotificationUseCase;
+    private final SendNotificationUseCase sendNotificationUseCase;
     private final EncryptionService encryptionService;
     private final PublishingService<EventCreateAccountPublishing> publishingService;
 
@@ -41,12 +40,8 @@ public class AccountServiceImpl implements AccountService {
         final var existingAccount = findAccountUseCase.execute(dto.email());
         if (Objects.nonNull(existingAccount)) throw new GatewayException("This account already exists! With email:", dto.email());
         final var account = Account.create(dto.firstName(), dto.lastName(), dto.email(), encryptionService.encryption(dto.password()), false);
-        final var notification = Notification.create(account.getEmail(), "hashcode-confirmed-account", Arrays.asList(new Parameter("hashcode", HashCodeUtils.create(digits)), new Parameter("process", "false"),new Parameter("expiration-date", DateUtils.fromMillis(milliseconds).toString())));
-        publishingService.publish(EventCreateAccountPublishing.builder()
-                .account(account)
-                .notification(notification)
-                .build());
-        saveNotificationUseCase.execute(notification);
+        sendNotificationUseCase.execute(account.getEmail(), "hashcode-confirmed-account", Arrays.asList(new Parameter("hashcode", HashCodeUtils.create(digits)), new Parameter("process", "false"),new Parameter("expiration-date", DateUtils.fromMillis(milliseconds).toString())));
+        publishingService.publish(EventCreateAccountPublishing.builder().account(account).build());
         return saveAccountUseCase.execute(account);
     }
 }

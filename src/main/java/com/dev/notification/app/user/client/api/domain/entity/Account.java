@@ -18,9 +18,9 @@ public class Account {
     private final String password;
     private final boolean active;
     private final boolean admin;
-    private final boolean confirmed;
+    private boolean confirmed;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     private Account(final String identifier,
                     final String firstName,
@@ -93,19 +93,9 @@ public class Account {
         return email.value();
     }
 
-    public Account isConfirmedAccount(){
-        return new Account(
-                getIdentifier(),
-                getFirstName(),
-                getLastName(),
-                getEmail(),
-                getPassword(),
-                isActive(),
-                isAdmin(),
-                true,
-                getCreatedAt(),
-                LocalDateTime.now()
-        );
+    public void isConfirmedAccount(){
+        this.confirmed = true;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getFullName(){

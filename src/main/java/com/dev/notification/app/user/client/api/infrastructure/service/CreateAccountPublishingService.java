@@ -3,9 +3,7 @@ package com.dev.notification.app.user.client.api.infrastructure.service;
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
 import com.dev.notification.app.user.client.api.domain.service.models.EventCreateAccountPublishing;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.CreateAccountEvent;
-import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventNotificationTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventCreateAccountTopic;
-import com.dev.notification.app.user.client.api.infrastructure.messaging.models.NotificationTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.models.CreateAccountTopic;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +16,13 @@ public class CreateAccountPublishingService implements PublishingService<EventCr
 
     private final ApplicationEventPublisher eventPublisher;
     private final SendEventCreateAccountTopic sendEventCreateAccountTopic;
-    private final SendEventNotificationTopic sendEventNotificationTopic;
     private final Gson gson;
 
     @Override
     public void publish(final EventCreateAccountPublishing dto) {
         eventPublisher.publishEvent(new CreateAccountEvent(this, dto.account().getIdentifier(), gson.toJson(dto.account())));
-        sendEventCreateAccountTopic.execute(CreateAccountTopic.builder()
-                        .email(dto.account().getEmail())
-                        .password(dto.account().getPassword())
-                        .admin(dto.account().isAdmin())
-                .build());
-        sendEventNotificationTopic.execute(NotificationTopic.builder()
-                        .to(dto.notification().getContact())
-                        .template(dto.notification().getTemplate())
-                        .parameters(dto.notification().getParameters())
-                .build());
+        sendEventCreateAccountTopic.execute(
+                CreateAccountTopic.builder().email(dto.account().getEmail()).password(dto.account().getPassword()).admin(dto.account().isAdmin()).build()
+        );
     }
 }
