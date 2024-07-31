@@ -4,4 +4,5 @@ import com.dev.notification.app.user.client.api.domain.entity.Event;
 
 public interface EventGateway {
     void save(final Event event);
+    Event findByAggregateIdentifier(final String aggregateIdentifier);
 }

@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.domain.validation;
 
+import com.dev.notification.app.user.client.api.annotation.UnitaryTest;
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.validation.PasswordValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@UnitaryTest
 class PasswordValidatorTest {
 
     private final PasswordValidator validator = new PasswordValidator();

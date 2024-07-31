@@ -3,12 +3,14 @@ package com.dev.notification.app.user.client.api.application;
 import com.dev.notification.app.user.client.api.annotation.IntegrationIT;
 import com.dev.notification.app.user.client.api.domain.entity.Account;
 import com.dev.notification.app.user.client.api.domain.gateway.AccountGateway;
+import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @IntegrationIT
 class FindAccountUseCaseIT {
@@ -51,7 +53,7 @@ class FindAccountUseCaseIT {
     @DisplayName("Should not throws exception when account not found.")
     void t2(){
         // Given && When
-        final var actualAccount = findAccountUseCase.execute(any());
+        final var actualAccount = findAccountUseCase.execute(IdentifierUtils.unique());
         // Then
         assertNull(actualAccount);
     }

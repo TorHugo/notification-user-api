@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.domain;
 
+import com.dev.notification.app.user.client.api.annotation.UnitaryTest;
 import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@UnitaryTest
 class NotificationDomainTest {
     private static final String CONTACT = "email@example.com";
     private static final String TEMPLATE = "template";

@@ -7,11 +7,9 @@ import com.dev.notification.app.user.client.api.domain.gateway.EventGateway;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedAccountEvent;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.CreateAccountEvent;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AccountEventListener {
@@ -32,7 +30,7 @@ public class AccountEventListener {
     }
 
     @EventListener
-    public void handlerCreateAccount(final ConfirmedAccountEvent createAccountEvent){
+    public void handlerConfirmedAccount(final ConfirmedAccountEvent createAccountEvent){
         try {
             final var event = Event.create(
                     createAccountEvent.getAggregateIdentifier(),

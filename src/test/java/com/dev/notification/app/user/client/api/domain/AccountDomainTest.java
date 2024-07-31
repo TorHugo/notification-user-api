@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.domain;
 
+import com.dev.notification.app.user.client.api.annotation.UnitaryTest;
 import com.dev.notification.app.user.client.api.domain.entity.Account;
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@UnitaryTest
 class AccountDomainTest {
 
     private static final String FIRST_NAME = "Test";
@@ -103,7 +105,7 @@ class AccountDomainTest {
     @DisplayName("Should throws exception when invalid email.")
     void t6(){
         // Given
-        final var expectedErrorMessage = "This email is not valid. Email:";
+        final var expectedErrorMessage = "This email is not valid.";
         // When
         final var exception = assertThrows(DomainException.class, ()-> Account.create(FIRST_NAME, LAST_NAME, INCORRECT_EMAIL, CORRECT_PASSWORD, false));
         // Then

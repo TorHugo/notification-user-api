@@ -5,14 +5,13 @@ import com.dev.notification.app.user.client.api.domain.exception.template.Domain
 import java.util.Objects;
 
 public record Email(String value) {
-
-    public Email(final String value) {
+    public Email {
+        Objects.requireNonNull(value);
         validateValue(value);
-        this.value = Objects.requireNonNull(value);
     }
 
-    public void validateValue(final String currentValue) {
+    public static void validateValue(final String currentValue) {
         if (!currentValue.matches("^(.+)@(.+)$"))
-            throw new DomainException("This email is not valid. Email:", currentValue);
+            throw new DomainException("This email is not valid.");
     }
 }

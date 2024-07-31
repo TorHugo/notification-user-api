@@ -1,5 +1,6 @@
 package com.dev.notification.app.user.client.api.domain;
 
+import com.dev.notification.app.user.client.api.annotation.UnitaryTest;
 import com.dev.notification.app.user.client.api.domain.entity.Event;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@UnitaryTest
 class EventDomainTest {
     private static final String AGGREGATE_IDENTIFIER = IdentifierUtils.unique();
     private static final EventType EVENT_TYPE = EventType.CONFIRMED_ACCOUNT_EVENT;

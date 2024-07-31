@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.STRING;
-import static org.hibernate.type.SqlTypes.JSON;
 
 @Table(name = "events_tb", schema = "user_client_db")
 @Entity
@@ -25,7 +23,7 @@ public class EventEntity {
     private String identifier;
     private String aggregateIdentifier;
 
-    @JdbcTypeCode(JSON)
+    @Column(columnDefinition = "TEXT")
     private String transaction;
 
     @Enumerated(STRING)
