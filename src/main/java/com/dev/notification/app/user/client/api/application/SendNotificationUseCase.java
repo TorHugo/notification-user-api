@@ -7,6 +7,7 @@ import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEve
 import com.dev.notification.app.user.client.api.infrastructure.messaging.models.NotificationTopic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class SendNotificationUseCase {
     private final NotificationGateway notificationGateway;
     private final SendEventNotificationTopic sendEventNotificationTopic;
 
+    @Transactional
     public void execute(final String contact, final String template, final List<Parameter> parameters){
         sendEventNotificationTopic.execute(NotificationTopic.builder()
                 .to(contact)

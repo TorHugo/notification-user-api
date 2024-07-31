@@ -1,4 +1,4 @@
-package com.dev.notification.app.user.client.api.event;
+package com.dev.notification.app.user.client.api.infrastructure.event;
 
 import com.dev.notification.app.user.client.api.annotation.IntegrationIT;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;

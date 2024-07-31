@@ -16,6 +16,7 @@ import com.dev.notification.app.user.client.api.infrastructure.api.models.reques
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
     private Integer milliseconds;
 
     @Override
+    @Transactional
     public Account create(final CreateAccountDTO dto) {
         final var existingAccount = findAccountUseCase.execute(dto.email());
         if (Objects.nonNull(existingAccount)) throw new GatewayException("This account already exists! With email:", dto.email());

@@ -11,6 +11,7 @@ import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.request.ConfirmedAccountDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ConfirmedAccountUseCase {
     private final SendNotificationUseCase sendNotificationUseCase;
     private final PublishingService<EventConfirmedAccountPublishing> publishingService;
 
+    @Transactional
     public void execute(final ConfirmedAccountDTO dto){
         final var notification = notificationGateway.findByContact(dto.email());
         validate(notification, dto);

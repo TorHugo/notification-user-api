@@ -3,9 +3,7 @@ package com.dev.notification.app.user.client.api.domain.utils;
 import java.util.Random;
 
 public class HashCodeUtils {
-    private HashCodeUtils(){
-
-    }
+    private HashCodeUtils() {}
     private static final Random random = new Random();
 
     public static String create(final Integer digits) {

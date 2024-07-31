@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,6 @@ import static jakarta.persistence.EnumType.STRING;
 @Table(name = "events_tb", schema = "user_client_db")
 @Entity
 @Getter
-@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class EventEntity {

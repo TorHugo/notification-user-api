@@ -7,14 +7,12 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Table(name = "notification_tb", schema = "user_client_db")
 @Entity
 @Getter
-@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class NotificationEntity {

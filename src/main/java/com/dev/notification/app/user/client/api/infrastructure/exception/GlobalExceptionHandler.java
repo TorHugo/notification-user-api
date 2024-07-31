@@ -5,7 +5,9 @@ import com.dev.notification.app.user.client.api.domain.exception.template.EventE
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.infrastructure.exception.models.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import static org.springframework.http.HttpStatus.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handlerRepositoryException(final DomainException ex,
                                                         final HttpServletRequest request) {
         return ExceptionResponse.builder()
@@ -28,6 +31,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EventException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponse handlerDomainException(final EventException ex,
                                                     final HttpServletRequest request) {
         return ExceptionResponse.builder()
@@ -40,6 +44,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(GatewayException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionResponse handlerDomainException(final GatewayException ex,
                                                     final HttpServletRequest request) {
         return ExceptionResponse.builder()
