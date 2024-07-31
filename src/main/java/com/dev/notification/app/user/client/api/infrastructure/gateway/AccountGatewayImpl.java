@@ -17,7 +17,7 @@ public class AccountGatewayImpl implements AccountGateway {
     private final AccountMapper accountRepositoryMapper;
 
     @Override
-    public Account saveToAccount(final Account account) {
+    public Account save(final Account account) {
         final var entity = accountRepositoryMapper.fromAggregate(account);
         return accountRepositoryMapper.toAggregate(accountRepository.save(entity));
     }
@@ -33,5 +33,11 @@ public class AccountGatewayImpl implements AccountGateway {
         final var entity = accountRepository.findByEmail(email);
         if (Objects.isNull(entity)) throw new GatewayException("Account not found!", email);
         return accountRepositoryMapper.toAggregate(entity);
+    }
+
+    @Override
+    public Account findAccountByIdentifier(final String identifier) {
+        final var entity = accountRepository.findById(identifier).orElse(null);
+        return Objects.isNull(entity) ? null : accountRepositoryMapper.toAggregate(entity);
     }
 }

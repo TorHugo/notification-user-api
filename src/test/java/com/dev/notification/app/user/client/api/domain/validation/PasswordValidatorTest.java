@@ -1,4 +1,4 @@
-package com.dev.notification.app.user.client.api.validation;
+package com.dev.notification.app.user.client.api.domain.validation;
 
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.validation.PasswordValidator;

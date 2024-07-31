@@ -4,20 +4,15 @@ import com.dev.notification.app.user.client.api.domain.exception.template.Domain
 
 import java.util.Objects;
 
-public record Email(String value) implements ValueObject<String> {
+public record Email(String value) {
 
     public Email(final String value) {
         validateValue(value);
         this.value = Objects.requireNonNull(value);
     }
 
-    @Override
     public void validateValue(final String currentValue) {
-        if (isValidValue(currentValue))
+        if (!currentValue.matches("^(.+)@(.+)$"))
             throw new DomainException("This email is not valid. Email:", currentValue);
-    }
-
-    private boolean isValidValue(final String email) {
-        return !email.matches("^(.+)@(.+)$");
     }
 }

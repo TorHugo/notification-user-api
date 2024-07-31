@@ -11,6 +11,6 @@ public class SaveAccountUseCase {
     private final AccountGateway accountGateway;
 
     public Account execute(final Account account){
-        return accountGateway.saveToAccount(account);
+        return accountGateway.save(account);
     }
 }

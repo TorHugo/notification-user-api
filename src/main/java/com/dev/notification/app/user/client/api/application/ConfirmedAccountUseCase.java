@@ -26,11 +26,11 @@ public class ConfirmedAccountUseCase {
     private final PublishingService<EventConfirmedAccountPublishing> publishingService;
 
     public void execute(final ConfirmedAccountDTO dto){
-        final var notification = notificationGateway.findByAccount(dto.email());
+        final var notification = notificationGateway.findByContact(dto.email());
         validate(notification, dto);
         final var account = accountGateway.findAccountByEmailWithThrows(dto.email());
         account.isConfirmedAccount();
-        accountGateway.saveToAccount(account);
+        accountGateway.save(account);
         sendNotificationUseCase.execute(account.getEmail(), "welcome", List.of(new Parameter("name", account.getFullName())));
         publishingService.publish(EventConfirmedAccountPublishing.builder().account(account).build());
     }
@@ -41,8 +41,6 @@ public class ConfirmedAccountUseCase {
         final var notificationHash = notification.findByName("hashcode");
         final var expirationDate = notification.findByName("expiration-date");
 
-        if (!Objects.equals(dto.email(), notification.getContact()))
-            throw new DomainException("This hashcode does not belong to this account!");
         if (!Objects.equals(dto.hash(), notificationHash.value()))
             throw new DomainException("This hashcode is not the same as the saved one!");
         if (currentDate.isAfter(DateUtils.convertToString(expirationDate.value())))

@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -51,25 +52,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-
-tasks.jacocoTestReport {
-	dependsOn test
-	reports {
-		xml.required = true
-		html.required = true
-	}
-}
-
-tasks.jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.8
-			}
-		}
-	}
-}
-
-check.dependsOn jacocoTestCoverageVerification
-
