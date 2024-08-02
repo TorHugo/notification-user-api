@@ -2,6 +2,7 @@ package com.dev.notification.app.user.client.api.infrastructure.api;
 
 import com.dev.notification.app.user.client.api.infrastructure.api.models.request.ConfirmedHashDTO;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.request.EmailAccountDTO;
+import com.dev.notification.app.user.client.api.infrastructure.api.models.request.RedefinitionPasswordDTO;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.response.AccountSuccessfullyDTO;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.request.CreateAccountDTO;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.response.MessageDTO;
@@ -27,4 +28,8 @@ public interface AccountAPI {
     @PostMapping("/reset-password/confirmed")
     @ResponseStatus(HttpStatus.CREATED)
     MessageDTO forgetPassword(final @Valid @RequestBody ConfirmedHashDTO request);
+
+    @PutMapping("/redefinition-password")
+    @ResponseStatus(HttpStatus.CREATED)
+    MessageDTO redefinitionPassword(final @Valid @RequestBody RedefinitionPasswordDTO request);
 }

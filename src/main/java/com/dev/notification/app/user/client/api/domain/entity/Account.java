@@ -1,22 +1,20 @@
 package com.dev.notification.app.user.client.api.domain.entity;
 
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
-import com.dev.notification.app.user.client.api.domain.value.object.Email;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
+import com.dev.notification.app.user.client.api.domain.value.object.Email;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
-@ToString
 public class Account {
 
     private final String identifier;
     private final String firstName;
     private final String lastName;
     private final Email email;
-    private final String password;
+    private String password;
     private final boolean active;
     private final boolean admin;
     private boolean confirmed;
@@ -102,5 +100,9 @@ public class Account {
 
     public String getFullName(){
         return this.firstName + " " + this.lastName;
+    }
+
+    public void updatePassword(final String password) {
+        this.password = password;
     }
 }

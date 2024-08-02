@@ -4,10 +4,7 @@ import com.dev.notification.app.user.client.api.domain.entity.Event;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
 import com.dev.notification.app.user.client.api.domain.exception.template.EventException;
 import com.dev.notification.app.user.client.api.domain.gateway.EventGateway;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedAccountEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedResetPasswordEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.CreateAccountEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.SendResetPasswordEvent;
+import com.dev.notification.app.user.client.api.infrastructure.event.models.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -67,6 +64,20 @@ public class AccountEventListener {
             final var event = Event.create(
                     entryEvent.getAggregateIdentifier(),
                     EventType.CONFIRMED_RESET_PASSWORD_EVENT,
+                    entryEvent.getTransaction()
+            );
+            eventGateway.save(event);
+        } catch (final Exception e) {
+            throw new EventException(DEFAULT_ERROR);
+        }
+    }
+
+    @EventListener
+    public void handlerConfirmedAccount(final RedefinitionPasswordEvent entryEvent){
+        try {
+            final var event = Event.create(
+                    entryEvent.getAggregateIdentifier(),
+                    EventType.REDEFINITION_PASSWORD_EVENT,
                     entryEvent.getTransaction()
             );
             eventGateway.save(event);

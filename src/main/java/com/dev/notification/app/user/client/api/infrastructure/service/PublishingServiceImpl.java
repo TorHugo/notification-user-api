@@ -1,16 +1,13 @@
 package com.dev.notification.app.user.client.api.infrastructure.service;
 
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedAccountEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.ConfirmedResetPasswordEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.CreateAccountEvent;
-import com.dev.notification.app.user.client.api.infrastructure.event.models.SendResetPasswordEvent;
+import com.dev.notification.app.user.client.api.infrastructure.event.models.*;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventConfirmedAccountTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventCreateAccountTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventRestPasswordTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.models.ConfirmedAccountTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.models.CreateAccountTopic;
-import com.dev.notification.app.user.client.api.infrastructure.messaging.models.ResetPasswordTopic;
+import com.dev.notification.app.user.client.api.infrastructure.messaging.models.RedefinitionPasswordTopic;
 import com.dev.notification.app.user.client.api.infrastructure.service.models.EncryptedPassword;
 import com.dev.notification.app.user.client.api.infrastructure.service.models.EventPublishing;
 import com.google.gson.Gson;
@@ -47,11 +44,19 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
                 eventPublisher.publishEvent(new SendResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(dto.object())));
                 break;
             case CONFIRMED_RESET_PASSWORD_EVENT:
-                final var event = (EncryptedPassword) dto.object();
-                eventPublisher.publishEvent(new ConfirmedResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(event)));
+                final var confirmedEvent = (EncryptedPassword) dto.object();
+                eventPublisher.publishEvent(new ConfirmedResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(confirmedEvent)));
                 sendEventRestPasswordTopic.execute(
-                        ResetPasswordTopic.builder().password(event.encryptedPassword()).build()
+                        RedefinitionPasswordTopic.builder().email(dto.account().getEmail()).password(confirmedEvent.encryptedPassword()).build()
                 );
+                break;
+            case REDEFINITION_PASSWORD_EVENT:
+                final var redefinitionEvent = (EncryptedPassword) dto.object();
+                eventPublisher.publishEvent(new RedefinitionPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(redefinitionEvent)));
+                sendEventRestPasswordTopic.execute(
+                        RedefinitionPasswordTopic.builder().email(dto.account().getEmail()).password(redefinitionEvent.encryptedPassword()).build()
+                );
+                break;
         }
     }
 }

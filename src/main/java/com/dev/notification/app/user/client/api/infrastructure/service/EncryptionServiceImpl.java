@@ -13,4 +13,10 @@ public class EncryptionServiceImpl implements EncryptionService {
     public String encryption(final String value) {
         return BCrypt.hashpw(value, BCrypt.gensalt());
     }
+
+    @Override
+    public boolean matches(final String expectedValue,
+                           final String actualValue) {
+        return BCrypt.checkpw(expectedValue, actualValue);
+    }
 }

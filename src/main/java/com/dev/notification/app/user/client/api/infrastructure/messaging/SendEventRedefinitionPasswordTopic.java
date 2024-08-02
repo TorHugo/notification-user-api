@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SendEventRestPasswordTopic {
+public class SendEventRedefinitionPasswordTopic {
     private final KafkaProducerService kafkaProducerService;
     private final Gson gson;
 
