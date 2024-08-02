@@ -9,7 +9,7 @@ import com.dev.notification.app.user.client.api.domain.gateway.AccountGateway;
 import com.dev.notification.app.user.client.api.domain.gateway.NotificationGateway;
 import com.dev.notification.app.user.client.api.domain.utils.IdentifierUtils;
 import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
-import com.dev.notification.app.user.client.api.infrastructure.api.models.request.ConfirmedAccountDTO;
+import com.dev.notification.app.user.client.api.infrastructure.api.models.request.ConfirmedHashDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ class ConfirmedAccountUseCaseIT {
         assertNotNull(savedAccount);
         assertNotNull(savedNotification);
         // When
-        confirmedAccountUseCase.execute(new ConfirmedAccountDTO(HASH, EMAIL));
+        confirmedAccountUseCase.execute(new ConfirmedHashDTO(HASH, EMAIL));
         // Then
         final var newAccount = accountGateway.findAccountByIdentifier(savedAccount.getIdentifier());
         assertNotNull(newAccount);
@@ -67,7 +67,7 @@ class ConfirmedAccountUseCaseIT {
         // Given
         final var expectedErrorMessage = "Notification not found, for this contact.";
         // When
-        final var exception = assertThrows(GatewayException.class, ()-> confirmedAccountUseCase.execute(new ConfirmedAccountDTO(HASH, EMAIL)));
+        final var exception = assertThrows(GatewayException.class, ()-> confirmedAccountUseCase.execute(new ConfirmedHashDTO(HASH, EMAIL)));
         // Then
         assertNotNull(exception);
         assertEquals(expectedErrorMessage, exception.getMessage());
@@ -84,7 +84,7 @@ class ConfirmedAccountUseCaseIT {
         assertNotNull(savedNotification);
 
         // When
-        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedAccountDTO("invalid_hash", EMAIL)));
+        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedHashDTO("invalid_hash", EMAIL)));
 
         // Then
         assertNotNull(exception);
@@ -102,7 +102,7 @@ class ConfirmedAccountUseCaseIT {
         assertNotNull(savedNotification);
 
         // When
-        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedAccountDTO(HASH, EMAIL)));
+        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedHashDTO(HASH, EMAIL)));
 
         // Then
         assertNotNull(exception);
@@ -120,7 +120,7 @@ class ConfirmedAccountUseCaseIT {
         assertNotNull(savedNotification);
 
         // When
-        final var exception = assertThrows(GatewayException.class, () -> confirmedAccountUseCase.execute(new ConfirmedAccountDTO(HASH, EMAIL)));
+        final var exception = assertThrows(GatewayException.class, () -> confirmedAccountUseCase.execute(new ConfirmedHashDTO(HASH, EMAIL)));
 
         // Then
         assertNotNull(exception);
@@ -142,7 +142,7 @@ class ConfirmedAccountUseCaseIT {
         assertNotNull(savedNotification);
 
         // When
-        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedAccountDTO(HASH, EMAIL)));
+        final var exception = assertThrows(DomainException.class, () -> confirmedAccountUseCase.execute(new ConfirmedHashDTO(HASH, EMAIL)));
 
         // Then
         assertNotNull(exception);

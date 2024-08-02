@@ -1,5 +1,5 @@
 server:
-  port: ${AUTH_SERVICE_PORT:8080}
+  port: ${USER_CLIENT_PORT:8080}
   servlet:
     context-path: /api
 
@@ -40,8 +40,38 @@ spring:
       send-event-create-account-topic: CreateAccountEventTopic
       send-event-notification-topic: NotificationEventTopic
       send-event-confirmed-account-topic: ConfirmedAccountEventTopic
+      send-event-reset-password-topic: SendResetPasswordEventTopic
+
+  data:
+    redis:
+      host: ${REDIS_URI:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: ${REDIS_TIMEOUT:3000ms}
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+      key:
+        forget-password:
+          prefix-name: forget_password
+          time-invalid-key: 1 # hours
 
   integration:
-    email-token:
-      expiration-date: 900000
-      hash-digits: 6
+    hash:
+      digits:
+        confirmed-account: 6
+        forget-password: 5
+    expiration-time:
+      confirmed-account: 900000 # milliseconds
+      reset-password: 1000000 # milliseconds
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    tags:
+      enabled: true

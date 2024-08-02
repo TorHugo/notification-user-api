@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-public record ConfirmedAccountDTO(
-        @JsonProperty("hash-code") @NotBlank String hash,
+public record EmailAccountDTO(
         @JsonProperty("email") @NotBlank String email
 ) {
 }

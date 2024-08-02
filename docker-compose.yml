@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres_notification_app
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: notification
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  cassandra:
+    container_name: cassandra_notification_app
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_YAML_AUTO_CONFIG: "yes"
+      CASSANDRA_CLUSTER_NAME: "auth-service-db"
+      CASSANDRA_KEYSPACE_REPLICATION_FACTOR: "1"
+      CASSANDRA_STRONG_CONSISTENCY_QUORUM: "true"
+      CASSANDRA_USER: admin
+      CASSANDRA_PASSWORD: admin
+    volumes:
+      - ./cassandra_data:/var/lib/cassandra
+
+  redis:
+    container_name: redis_notification_app
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    restart: always
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zk_notification_app
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - ./zookeeper_data:/var/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka:2.13-2.7.0
+    container_name: kafka_notification_app
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    volumes:
+      - ./kafka_data:/var/lib/kafka
+    ports:
+      - "9092:9092"
+      - "7183:7183"
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop_notification_app
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    ports:
+      - "9000:9000"
+
+  prometheus:
+    container_name: prometheus_notification_app
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+networks:
+  default:
+    driver: bridge
