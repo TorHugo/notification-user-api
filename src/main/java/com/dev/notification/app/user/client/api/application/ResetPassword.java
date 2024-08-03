@@ -1,9 +1,9 @@
 package com.dev.notification.app.user.client.api.application;
 
-import com.dev.notification.app.user.client.api.domain.entity.ForgetPassword;
+import com.dev.notification.app.user.client.api.domain.entity.HashToken;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
 import com.dev.notification.app.user.client.api.domain.gateway.AccountGateway;
-import com.dev.notification.app.user.client.api.domain.gateway.ForgetPasswordGateway;
+import com.dev.notification.app.user.client.api.domain.gateway.HashTokenGateway;
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
 import com.dev.notification.app.user.client.api.domain.utils.DateUtils;
 import com.dev.notification.app.user.client.api.domain.utils.HashCodeUtils;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ResetPassword {
     private final AccountGateway accountGateway;
-    private final ForgetPasswordGateway forgetPasswordGateway;
+    private final HashTokenGateway hashTokenGateway;
     private final PublishingService<EventPublishing> publishingService;
 
     @Value("${spring.integration.hash.digits.forget-password}")
@@ -25,17 +25,21 @@ public class ResetPassword {
     @Value("${spring.integration.expiration-time.reset-password}")
     private Integer milliseconds;
 
+    @Value("${spring.data.redis.key.prefix-name.reset-password}")
+    private String prefix;
+
     public void execute(final String email){
         final var account = accountGateway.findAccountByEmailWithThrows(email);
-        final var forgetPassword = ForgetPassword.create(
+        final var hashToken = HashToken.create(
+                prefix,
                 account.getIdentifier(),
                 HashCodeUtils.create(hashDigits),
                 DateUtils.fromMillis(milliseconds)
         );
-        forgetPasswordGateway.save(forgetPassword);
+        hashTokenGateway.save(hashToken);
         publishingService.publish(EventPublishing.builder()
                 .eventType(EventType.SEND_RESET_PASSWORD_EVENT)
                 .account(account)
-                .object(forgetPassword).build());
+                .object(hashToken).build());
     }
 }

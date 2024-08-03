@@ -1,7 +1,7 @@
-package com.dev.notification.app.user.client.api.infrastructure.repository.mappers;
+package com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers;
 
 import com.dev.notification.app.user.client.api.domain.entity.Account;
-import com.dev.notification.app.user.client.api.infrastructure.repository.models.AccountEntity;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.models.AccountEntity;
 import org.springframework.stereotype.Component;
 
 @Component

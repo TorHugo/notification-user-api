@@ -3,8 +3,8 @@ package com.dev.notification.app.user.client.api.infrastructure.gateway;
 import com.dev.notification.app.user.client.api.domain.entity.Account;
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.domain.gateway.AccountGateway;
-import com.dev.notification.app.user.client.api.infrastructure.repository.AccountRepository;
-import com.dev.notification.app.user.client.api.infrastructure.repository.mappers.AccountMapper;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.AccountRepository;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,13 @@
-package com.dev.notification.app.user.client.api.infrastructure.repository.mappers;
+package com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers;
 
 import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
-import com.dev.notification.app.user.client.api.infrastructure.repository.models.NotificationEntity;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.models.NotificationEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Component

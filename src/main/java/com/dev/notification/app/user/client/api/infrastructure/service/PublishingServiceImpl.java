@@ -1,7 +1,7 @@
 package com.dev.notification.app.user.client.api.infrastructure.service;
 
 import com.dev.notification.app.user.client.api.application.CreateNotification;
-import com.dev.notification.app.user.client.api.domain.entity.ForgetPassword;
+import com.dev.notification.app.user.client.api.domain.entity.HashToken;
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
 import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.*;
@@ -35,7 +35,9 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
     public void publish(final EventPublishing dto) {
         switch (dto.eventType()){
             case CREATE_ACCOUNT_EVENT:
+                final var parameters = (List<Parameter>) dto.object();
                 eventPublisher.publishEvent(new CreateAccountEvent(this, dto.account().getIdentifier(), gson.toJson(dto.account())));
+                createNotification.execute(dto.account().getEmail(), "hashcode-confirmed-account", parameters);
                 sendEventCreateAccountTopic.execute(
                         CreateAccountTopic.builder().email(dto.account().getEmail()).password(dto.account().getPassword()).admin(dto.account().isAdmin()).build()
                 );
@@ -48,9 +50,9 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
                 );
                 break;
             case SEND_RESET_PASSWORD_EVENT:
-                final var resetPassword = (ForgetPassword) dto.object();
+                final var resetPassword = (HashToken) dto.object();
                 eventPublisher.publishEvent(new SendResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(dto.object())));
-                createNotification.execute(dto.account().getEmail(), "send-hash-reset-password", List.of(new Parameter("hash-code", resetPassword.getHashCode())));
+                createNotification.execute(dto.account().getEmail(), "send-hash-reset-password", List.of(new Parameter("hash-code", resetPassword.getHashcode())));
                 break;
             case CONFIRMED_RESET_PASSWORD_EVENT:
                 final var confirmedEvent = (EncryptedPassword) dto.object();

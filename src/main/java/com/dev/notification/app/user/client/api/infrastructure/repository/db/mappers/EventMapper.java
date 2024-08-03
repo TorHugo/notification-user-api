@@ -1,7 +1,7 @@
-package com.dev.notification.app.user.client.api.infrastructure.repository.mappers;
+package com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers;
 
 import com.dev.notification.app.user.client.api.domain.entity.Event;
-import com.dev.notification.app.user.client.api.infrastructure.repository.models.EventEntity;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.models.EventEntity;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -3,8 +3,8 @@ package com.dev.notification.app.user.client.api.infrastructure.gateway;
 import com.dev.notification.app.user.client.api.domain.entity.Event;
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.domain.gateway.EventGateway;
-import com.dev.notification.app.user.client.api.infrastructure.repository.EventRepository;
-import com.dev.notification.app.user.client.api.infrastructure.repository.mappers.EventMapper;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.EventRepository;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers.EventMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

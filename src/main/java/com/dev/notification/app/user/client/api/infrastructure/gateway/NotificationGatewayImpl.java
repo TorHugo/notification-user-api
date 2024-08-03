@@ -3,8 +3,8 @@ package com.dev.notification.app.user.client.api.infrastructure.gateway;
 import com.dev.notification.app.user.client.api.domain.entity.Notification;
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.domain.gateway.NotificationGateway;
-import com.dev.notification.app.user.client.api.infrastructure.repository.NotificationRepository;
-import com.dev.notification.app.user.client.api.infrastructure.repository.mappers.NotificationMapper;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.NotificationRepository;
+import com.dev.notification.app.user.client.api.infrastructure.repository.db.mappers.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.dev.notification.app.user.client.api.infrastructure.repository.models;
+package com.dev.notification.app.user.client.api.infrastructure.repository.db.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

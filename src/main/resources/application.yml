@@ -54,9 +54,10 @@ spring:
           min-idle: 0
           max-wait: -1ms
       key:
-        forget-password:
-          prefix-name: forget_password
-          time-invalid-key: 1 # hours
+        time-invalid-key: 1 # hours
+        prefix-name:
+          confirmed-account: confirmed-account
+          reset-password: reset-password
 
   integration:
     hash:
