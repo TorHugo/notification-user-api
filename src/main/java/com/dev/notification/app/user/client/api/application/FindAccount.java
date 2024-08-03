@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FindAccountUseCase {
+public class FindAccount {
     private final AccountGateway accountGateway;
 
     public Account execute(final String email){

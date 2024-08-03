@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class ConfirmedResetPasswordUseCase {
+public class ValidateResetPassword {
     private final ForgetPasswordGateway forgetPasswordGateway;
 
     public void execute(final Account account, final String hash){

@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @IntegrationIT
-class SendNotificationUseCaseIT {
+class CreateNotificationIT {
 
     @Autowired
-    private SendNotificationUseCase sendNotificationUseCase;
+    private CreateNotification createNotification;
 
     @Autowired
     private NotificationGateway notificationGateway;
@@ -31,7 +31,7 @@ class SendNotificationUseCaseIT {
     @DisplayName("Should save and send notification, with successfully.")
     void t1(){
         //Given && When
-        sendNotificationUseCase.execute(CONTACT, TEMPLATE, PARAMETERS);
+        createNotification.execute(CONTACT, TEMPLATE, PARAMETERS);
         //Then
         final var currentNotification = notificationGateway.findByContact(CONTACT);
         assertNotNull(currentNotification);
@@ -46,7 +46,7 @@ class SendNotificationUseCaseIT {
     @DisplayName("Should save and send notification when parameters is empty, with successfully.")
     void t2(){
         //Given && When
-        sendNotificationUseCase.execute(CONTACT, TEMPLATE, PARAMETERS_EMPTY);
+        createNotification.execute(CONTACT, TEMPLATE, PARAMETERS_EMPTY);
         //Then
         final var currentNotification = notificationGateway.findByContact(CONTACT);
         assertNotNull(currentNotification);

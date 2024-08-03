@@ -1,8 +1,8 @@
 package com.dev.notification.app.user.client.api.infrastructure.api.controller;
 
-import com.dev.notification.app.user.client.api.application.ConfirmedAccountUseCase;
-import com.dev.notification.app.user.client.api.application.RedefinitionPasswordUseCase;
-import com.dev.notification.app.user.client.api.application.SendResetPasswordUseCase;
+import com.dev.notification.app.user.client.api.application.ConfirmedAccount;
+import com.dev.notification.app.user.client.api.application.RedefinitionPassword;
+import com.dev.notification.app.user.client.api.application.ResetPassword;
 import com.dev.notification.app.user.client.api.domain.service.AccountService;
 import com.dev.notification.app.user.client.api.domain.service.ResetPasswordService;
 import com.dev.notification.app.user.client.api.infrastructure.api.AccountAPI;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AccountController implements AccountAPI {
     private final AccountService createAccountUseCase;
-    private final ConfirmedAccountUseCase confirmedAccountUseCase;
-    private final SendResetPasswordUseCase sendResetPasswordUseCase;
+    private final ConfirmedAccount confirmedAccount;
+    private final ResetPassword resetPassword;
     private final ResetPasswordService resetPasswordService;
-    private final RedefinitionPasswordUseCase redefinitionPasswordUseCase;
+    private final RedefinitionPassword redefinitionPassword;
 
     @Override
     public AccountSuccessfullyDTO create(final CreateAccountDTO request) {
@@ -32,13 +32,13 @@ public class AccountController implements AccountAPI {
 
     @Override
     public MessageDTO confirmed(final ConfirmedHashDTO request) {
-        confirmedAccountUseCase.execute(request);
+        confirmedAccount.execute(request);
         return new MessageDTO("Account is confirmed with successfully!");
     }
 
     @Override
     public MessageDTO forgetPassword(final EmailAccountDTO request) {
-        sendResetPasswordUseCase.execute(request.email());
+        resetPassword.execute(request.email());
         return new MessageDTO("Please check your email as a verification code has been sent to it.");
     }
 
@@ -50,7 +50,7 @@ public class AccountController implements AccountAPI {
 
     @Override
     public MessageDTO redefinitionPassword(final RedefinitionPasswordDTO request) {
-        redefinitionPasswordUseCase.execute(request);
+        redefinitionPassword.execute(request);
         return new MessageDTO("This password has been reset successfully!");
     }
 }

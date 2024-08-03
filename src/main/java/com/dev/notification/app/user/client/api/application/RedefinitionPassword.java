@@ -15,17 +15,15 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class RedefinitionPasswordUseCase {
+public class RedefinitionPassword {
     private final AccountGateway accountGateway;
     private final EncryptionService encryptionService;
     private final PublishingService<EventPublishing> publishingService;
 
     public void execute(final RedefinitionPasswordDTO dto){
-        if (Objects.equals(dto.oldPassword(), dto.newPassword()))
-            throw new DomainException("The new password is the same as the old password!");
+        if (Objects.equals(dto.oldPassword(), dto.newPassword())) throw new DomainException("The new password is the same as the old password!");
         final var account = accountGateway.findAccountByEmailWithThrows(dto.email());
-        if (!encryptionService.matches(dto.oldPassword(), account.getPassword()))
-            throw new DomainException("The password passed is not the same as the saved one!");
+        if (!encryptionService.matches(dto.oldPassword(), account.getPassword())) throw new DomainException("The password passed is not the same as the saved one!");
         final var newPasswordEncrypted = encryptionService.encryption(dto.newPassword());
         account.updatePassword(newPasswordEncrypted);
         publishingService.publish(EventPublishing.builder()

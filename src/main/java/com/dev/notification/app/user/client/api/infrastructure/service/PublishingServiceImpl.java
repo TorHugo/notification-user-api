@@ -1,6 +1,9 @@
 package com.dev.notification.app.user.client.api.infrastructure.service;
 
+import com.dev.notification.app.user.client.api.application.CreateNotification;
+import com.dev.notification.app.user.client.api.domain.entity.ForgetPassword;
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
+import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.event.models.*;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventConfirmedAccountTopic;
 import com.dev.notification.app.user.client.api.infrastructure.messaging.SendEventCreateAccountTopic;
@@ -15,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PublishingServiceImpl implements PublishingService<EventPublishing> {
@@ -24,6 +29,7 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
     private final SendEventCreateAccountTopic sendEventCreateAccountTopic;
     private final SendEventConfirmedAccountTopic sendEventConfirmedAccountTopic;
     private final SendEventRestPasswordTopic sendEventRestPasswordTopic;
+    private final CreateNotification createNotification;
 
     @Override
     public void publish(final EventPublishing dto) {
@@ -36,12 +42,15 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
                 break;
             case CONFIRMED_ACCOUNT_EVENT:
                 eventPublisher.publishEvent(new ConfirmedAccountEvent(this, dto.account().getIdentifier(), gson.toJson(dto.account())));
+                createNotification.execute(dto.account().getEmail(), "welcome", List.of(new Parameter("name", dto.account().getFullName())));
                 sendEventConfirmedAccountTopic.execute(
                         ConfirmedAccountTopic.builder().email(dto.account().getEmail()).confirmed(dto.account().isConfirmed()).build()
                 );
                 break;
             case SEND_RESET_PASSWORD_EVENT:
+                final var resetPassword = (ForgetPassword) dto.object();
                 eventPublisher.publishEvent(new SendResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(dto.object())));
+                createNotification.execute(dto.account().getEmail(), "send-hash-reset-password", List.of(new Parameter("hash-code", resetPassword.getHashCode())));
                 break;
             case CONFIRMED_RESET_PASSWORD_EVENT:
                 final var confirmedEvent = (EncryptedPassword) dto.object();

@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 
 @IntegrationIT
-class FindAccountUseCaseIT {
+class FindAccountIT {
     @Autowired
-    private FindAccountUseCase findAccountUseCase;
+    private FindAccount findAccount;
 
     @Autowired
     private AccountGateway accountGateway;
@@ -34,7 +33,7 @@ class FindAccountUseCaseIT {
         assertNotNull(savedAccount);
         assertNotNull(savedAccount.getEmail());
         // When
-        final var actualAccount = findAccountUseCase.execute(savedAccount.getEmail());
+        final var actualAccount = findAccount.execute(savedAccount.getEmail());
         // Then
         assertNotNull(actualAccount);
         assertEquals(actualAccount.getIdentifier(), savedAccount.getIdentifier());
@@ -53,7 +52,7 @@ class FindAccountUseCaseIT {
     @DisplayName("Should not throws exception when account not found.")
     void t2(){
         // Given && When
-        final var actualAccount = findAccountUseCase.execute(IdentifierUtils.unique());
+        final var actualAccount = findAccount.execute(IdentifierUtils.unique());
         // Then
         assertNull(actualAccount);
     }

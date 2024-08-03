@@ -7,21 +7,16 @@ import com.dev.notification.app.user.client.api.domain.gateway.ForgetPasswordGat
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
 import com.dev.notification.app.user.client.api.domain.utils.DateUtils;
 import com.dev.notification.app.user.client.api.domain.utils.HashCodeUtils;
-import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.service.models.EventPublishing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
-public class SendResetPasswordUseCase {
+public class ResetPassword {
     private final AccountGateway accountGateway;
     private final ForgetPasswordGateway forgetPasswordGateway;
-    private final SendNotificationUseCase sendNotificationUseCase;
     private final PublishingService<EventPublishing> publishingService;
 
     @Value("${spring.integration.hash.digits.forget-password}")
@@ -37,8 +32,10 @@ public class SendResetPasswordUseCase {
                 HashCodeUtils.create(hashDigits),
                 DateUtils.fromMillis(milliseconds)
         );
-        sendNotificationUseCase.execute(account.getEmail(), "send-hash-forget-password", List.of(new Parameter("hash-code", forgetPassword.getHashCode())));
-        publishingService.publish(EventPublishing.builder().eventType(EventType.SEND_RESET_PASSWORD_EVENT).account(account).object(forgetPassword).build());
         forgetPasswordGateway.save(forgetPassword);
+        publishingService.publish(EventPublishing.builder()
+                .eventType(EventType.SEND_RESET_PASSWORD_EVENT)
+                .account(account)
+                .object(forgetPassword).build());
     }
 }

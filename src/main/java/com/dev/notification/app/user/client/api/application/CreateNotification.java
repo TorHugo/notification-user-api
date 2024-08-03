@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class SendNotificationUseCase {
+public class CreateNotification {
     private final NotificationGateway notificationGateway;
     private final SendEventNotificationTopic sendEventNotificationTopic;
 

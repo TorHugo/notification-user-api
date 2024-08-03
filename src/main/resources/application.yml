@@ -40,7 +40,7 @@ spring:
       send-event-create-account-topic: CreateAccountEventTopic
       send-event-notification-topic: NotificationEventTopic
       send-event-confirmed-account-topic: ConfirmedAccountEventTopic
-      send-event-reset-password-topic: SendResetPasswordEventTopic
+      send-event-reset-password-topic: ResetPasswordEventTopic
 
   data:
     redis:
