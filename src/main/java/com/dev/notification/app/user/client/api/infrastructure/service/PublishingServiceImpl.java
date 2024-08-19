@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.dev.notification.app.user.client.api.domain.enums.TemplateMessage.CONFIRMED_ACCOUNT;
+
 @Service
 @RequiredArgsConstructor
 public class PublishingServiceImpl implements PublishingService<EventPublishing> {
@@ -37,14 +39,14 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
             case CREATE_ACCOUNT_EVENT:
                 final var parameters = (List<Parameter>) dto.object();
                 eventPublisher.publishEvent(new CreateAccountEvent(this, dto.account().getIdentifier(), gson.toJson(dto.account())));
-                createNotification.execute(dto.account().getEmail(), "hashcode-confirmed-account", parameters);
+                createNotification.execute(dto.account().getEmail(), CONFIRMED_ACCOUNT.getSubject(),CONFIRMED_ACCOUNT.getTemplate(), parameters);
                 sendEventCreateAccountTopic.execute(
                         CreateAccountTopic.builder().email(dto.account().getEmail()).password(dto.account().getPassword()).admin(dto.account().isAdmin()).build()
                 );
                 break;
             case CONFIRMED_ACCOUNT_EVENT:
                 eventPublisher.publishEvent(new ConfirmedAccountEvent(this, dto.account().getIdentifier(), gson.toJson(dto.account())));
-                createNotification.execute(dto.account().getEmail(), "welcome", List.of(new Parameter("name", dto.account().getFullName())));
+                createNotification.execute(dto.account().getEmail(), "testing","welcome", List.of(new Parameter("name", dto.account().getFullName())));
                 sendEventConfirmedAccountTopic.execute(
                         ConfirmedAccountTopic.builder().email(dto.account().getEmail()).confirmed(dto.account().isConfirmed()).build()
                 );
@@ -52,7 +54,7 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
             case SEND_RESET_PASSWORD_EVENT:
                 final var resetPassword = (HashToken) dto.object();
                 eventPublisher.publishEvent(new SendResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(dto.object())));
-                createNotification.execute(dto.account().getEmail(), "send-hash-reset-password", List.of(new Parameter("hash-code", resetPassword.getHashcode())));
+                createNotification.execute(dto.account().getEmail(), "testing","send-hash-reset-password", List.of(new Parameter("hash-code", resetPassword.getHashcode())));
                 break;
             case CONFIRMED_RESET_PASSWORD_EVENT:
                 final var confirmedEvent = (EncryptedPassword) dto.object();
@@ -60,6 +62,7 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
                 sendEventRestPasswordTopic.execute(
                         RedefinitionPasswordTopic.builder().email(dto.account().getEmail()).password(confirmedEvent.encryptedPassword()).build()
                 );
+                createNotification.execute(dto.account().getEmail(), "testing","temporary-password", List.of(new Parameter("temporary-password", confirmedEvent.encryptedPassword())));
                 break;
             case REDEFINITION_PASSWORD_EVENT:
                 final var redefinitionEvent = (EncryptedPassword) dto.object();

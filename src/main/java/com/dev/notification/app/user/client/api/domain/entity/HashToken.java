@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @ToString
@@ -53,5 +54,10 @@ public class HashToken {
                 expirationDate,
                 createdAt
         );
+    }
+
+    public String getTime(){
+        final var formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return this.expirationDate.format(formatter);
     }
 }

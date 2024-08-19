@@ -52,7 +52,11 @@ public class AccountServiceImpl implements AccountService {
         publishingService.publish(EventPublishing.builder()
                 .eventType(EventType.CREATE_ACCOUNT_EVENT)
                 .account(account)
-                .object(Arrays.asList(new Parameter("hashcode", hashToken.getHashcode()), new Parameter("confirmed", "false"),new Parameter("expiration-date", hashToken.getExpirationDate().toString())))
+                .object(Arrays.asList(
+                        new Parameter("hashcode", hashToken.getHashcode()),
+                        new Parameter("name", account.getFullName()),
+                        new Parameter("expiration-date", hashToken.getTime())
+                ))
                 .build());
         return createAccount.execute(account);
     }

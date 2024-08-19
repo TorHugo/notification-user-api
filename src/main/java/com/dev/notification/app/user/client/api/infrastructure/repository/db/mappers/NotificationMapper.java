@@ -19,6 +19,7 @@ public class NotificationMapper {
         return new NotificationEntity(
                 aggregate.getIdentifier(),
                 aggregate.getContact(),
+                aggregate.getSubject(),
                 aggregate.getTemplate(),
                 gson.toJson(aggregate.getParameters()),
                 aggregate.getCreatedAt()
@@ -31,6 +32,7 @@ public class NotificationMapper {
         return Notification.restore(
                 entity.getIdentifier(),
                 entity.getContact(),
+                entity.getSubject(),
                 entity.getTemplate(),
                 parameters,
                 entity.getCreatedAt()

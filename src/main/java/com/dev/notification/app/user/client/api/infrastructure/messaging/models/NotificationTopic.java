@@ -7,7 +7,8 @@ import java.util.List;
 
 @Builder
 public record NotificationTopic(
-        String to,
+        String contact,
+        String subject,
         String template,
         List<Parameter> parameters
 ) {

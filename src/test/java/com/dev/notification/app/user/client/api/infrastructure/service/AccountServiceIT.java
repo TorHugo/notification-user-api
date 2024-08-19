@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.dev.notification.app.user.client.api.domain.enums.TemplateMessage.CONFIRMED_ACCOUNT;
 import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationIT
@@ -36,7 +37,6 @@ class AccountServiceIT {
     private static final String EMAIL = "email@example.com";
     private static final String PASSWORD = "Password@123";
 
-    private static final String EXPECTED_TEMPLATE = "hashcode-confirmed-account";
     private static final EventType EXPECTED_EVENT_TYPE = EventType.CREATE_ACCOUNT_EVENT;
 
     @Test
@@ -72,7 +72,7 @@ class AccountServiceIT {
         assertNotNull(savedNotification);
         assertNotNull(savedNotification.getIdentifier());
         assertEquals(EMAIL, savedNotification.getContact());
-        assertEquals(EXPECTED_TEMPLATE, savedNotification.getTemplate());
+        assertEquals(CONFIRMED_ACCOUNT.getTemplate(), savedNotification.getTemplate());
         assertNotNull(savedNotification.getParameters());
         final var parameters = savedNotification.getParameters().stream().findFirst().orElse(null);
         assertNotNull(parameters);

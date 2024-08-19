@@ -37,10 +37,10 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       bootstrap-servers: localhost:9092
     producer:
-      send-event-create-account-topic: CreateAccountEventTopic
-      send-event-notification-topic: NotificationEventTopic
-      send-event-confirmed-account-topic: ConfirmedAccountEventTopic
-      send-event-reset-password-topic: ResetPasswordEventTopic
+      send-event-create-account-topic: CreateAccountEventTopic # to auth-service-api
+      send-event-notification-topic: NotificationEventTopic # to notification-lambda
+      send-event-confirmed-account-topic: ConfirmedAccountEventTopic # to auth-service-api
+      send-event-reset-password-topic: ResetPasswordEventTopic # to auth-service-api
 
   data:
     redis:

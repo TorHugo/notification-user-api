@@ -18,13 +18,17 @@ public class CreateNotification {
     private final SendEventNotificationTopic sendEventNotificationTopic;
 
     @Transactional
-    public void execute(final String contact, final String template, final List<Parameter> parameters){
+    public void execute(final String contact,
+                        final String subject,
+                        final String template,
+                        final List<Parameter> parameters){
         sendEventNotificationTopic.execute(NotificationTopic.builder()
-                .to(contact)
+                .contact(contact)
+                .subject(subject)
                 .template(template)
                 .parameters(parameters)
                 .build());
-        final var notification = Notification.create(contact, template, parameters);
+        final var notification = Notification.create(contact, subject, template, parameters);
         notificationGateway.save(notification);
     }
 }

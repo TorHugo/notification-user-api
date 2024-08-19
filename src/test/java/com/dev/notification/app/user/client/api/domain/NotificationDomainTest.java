@@ -25,7 +25,7 @@ class NotificationDomainTest {
     @DisplayName("Should be instantiated Notification with success.")
     void t1(){
         // Given && When
-        final var notification = Notification.create(CONTACT, TEMPLATE, PARAMETERS);
+        final var notification = Notification.create(CONTACT, "", TEMPLATE, PARAMETERS);
         // Then
         assertNotNull(notification);
         assertNotNull(notification.getIdentifier());
@@ -39,7 +39,7 @@ class NotificationDomainTest {
     @DisplayName("Should be instantiated Notification with success when parameters is empty.")
     void t2(){
         // Given && When
-        final var notification = Notification.create(CONTACT, TEMPLATE, PARAMETERS_IS_EMPTY);
+        final var notification = Notification.create(CONTACT, "", TEMPLATE, PARAMETERS_IS_EMPTY);
         // Then
         assertNotNull(notification);
         assertNotNull(notification.getIdentifier());
@@ -56,7 +56,7 @@ class NotificationDomainTest {
         final var expectedIdentifier = IdentifierUtils.unique();
         final var expectedCurrentDate = LocalDateTime.now();
         // When
-        final var notification = Notification.restore(expectedIdentifier, CONTACT, TEMPLATE, PARAMETERS, expectedCurrentDate);
+        final var notification = Notification.restore(expectedIdentifier, CONTACT, "", TEMPLATE, PARAMETERS, expectedCurrentDate);
         // Then
         assertNotNull(notification);
         assertEquals(expectedIdentifier, notification.getIdentifier());
@@ -72,7 +72,7 @@ class NotificationDomainTest {
         // Given
         final var expectedMessageError = "Contact must be not null or empty!";
         // When
-        final var notification = assertThrows(DomainException.class, ()-> Notification.create(null, TEMPLATE, PARAMETERS));
+        final var notification = assertThrows(DomainException.class, ()-> Notification.create(null, "", TEMPLATE, PARAMETERS));
         // Then
         assertNotNull(notification);
         assertEquals(expectedMessageError, notification.getMessage());
@@ -84,7 +84,7 @@ class NotificationDomainTest {
         // Given
         final var expectedMessageError = "Contact must be not null or empty!";
         // When
-        final var notification = assertThrows(DomainException.class, ()-> Notification.create("", TEMPLATE, PARAMETERS));
+        final var notification = assertThrows(DomainException.class, ()-> Notification.create("", "", TEMPLATE, PARAMETERS));
         // Then
         assertNotNull(notification);
         assertEquals(expectedMessageError, notification.getMessage());
@@ -96,7 +96,7 @@ class NotificationDomainTest {
         // Given
         final var expectedMessageError = "Template must be not null or empty!";
         // When
-        final var notification = assertThrows(DomainException.class, ()-> Notification.create(CONTACT, null, PARAMETERS));
+        final var notification = assertThrows(DomainException.class, ()-> Notification.create(CONTACT, "", null, PARAMETERS));
         // Then
         assertNotNull(notification);
         assertEquals(expectedMessageError, notification.getMessage());
@@ -108,7 +108,7 @@ class NotificationDomainTest {
         // Given
         final var expectedMessageError = "Template must be not null or empty!";
         // When
-        final var notification = assertThrows(DomainException.class, ()-> Notification.create(CONTACT, "", PARAMETERS));
+        final var notification = assertThrows(DomainException.class, ()-> Notification.create(CONTACT, "", "", PARAMETERS));
         // Then
         assertNotNull(notification);
         assertEquals(expectedMessageError, notification.getMessage());
@@ -120,7 +120,7 @@ class NotificationDomainTest {
         // Given
         final var expectedParameter = new Parameter("name", "value");
         // When
-        final var notification = Notification.create(CONTACT, TEMPLATE, PARAMETERS);
+        final var notification = Notification.create(CONTACT, "", TEMPLATE, PARAMETERS);
         final var parameter = notification.findByName("name");
 
         // Then
@@ -134,7 +134,7 @@ class NotificationDomainTest {
         // Given
         final var expectedMessageError = "This parameter is not a valid!";
         // When
-        final var notification = Notification.create(CONTACT, TEMPLATE, PARAMETERS);
+        final var notification = Notification.create(CONTACT, "", TEMPLATE, PARAMETERS);
         final var parameter = assertThrows(DomainException.class, ()-> notification.findByName("error"));
 
         // Then

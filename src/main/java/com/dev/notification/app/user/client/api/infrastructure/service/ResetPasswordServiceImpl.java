@@ -1,28 +1,23 @@
 package com.dev.notification.app.user.client.api.infrastructure.service;
 
 import com.dev.notification.app.user.client.api.application.ValidateResetPassword;
-import com.dev.notification.app.user.client.api.application.CreateNotification;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
 import com.dev.notification.app.user.client.api.domain.gateway.AccountGateway;
 import com.dev.notification.app.user.client.api.domain.service.EncryptionService;
 import com.dev.notification.app.user.client.api.domain.service.PublishingService;
 import com.dev.notification.app.user.client.api.domain.service.ResetPasswordService;
 import com.dev.notification.app.user.client.api.domain.utils.HashCodeUtils;
-import com.dev.notification.app.user.client.api.domain.value.object.Parameter;
 import com.dev.notification.app.user.client.api.infrastructure.api.models.request.ConfirmedHashDTO;
 import com.dev.notification.app.user.client.api.infrastructure.service.models.EncryptedPassword;
 import com.dev.notification.app.user.client.api.infrastructure.service.models.EventPublishing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final AccountGateway accountGateway;
     private final ValidateResetPassword validateResetPassword;
-    private final CreateNotification createNotification;
     private final EncryptionService encryptionService;
     private final PublishingService<EventPublishing> publishingService;
 
@@ -45,7 +40,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         validateResetPassword.execute(account, dto.hash());
         final var temporaryPassword = HashCodeUtils.generateValidPassword();
         final var encryptedPassword = encryptionService.encryption(temporaryPassword);
-        createNotification.execute(dto.email(), "temporary-password", List.of(new Parameter("temporary-password", temporaryPassword)));
         publishingService.publish(EventPublishing.builder().eventType(EventType.CONFIRMED_RESET_PASSWORD_EVENT).account(account).object(new EncryptedPassword(encryptedPassword)).build());
     }
 
