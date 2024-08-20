@@ -23,11 +23,11 @@ public interface AccountAPI {
 
     @PostMapping("/reset-password/send-hash")
     @ResponseStatus(HttpStatus.CREATED)
-    MessageDTO forgetPassword(final @Valid @RequestBody EmailAccountDTO request);
+    MessageDTO sendHashCodeResetPassword(final @Valid @RequestBody EmailAccountDTO request);
 
     @PostMapping("/reset-password/confirmed")
     @ResponseStatus(HttpStatus.CREATED)
-    MessageDTO forgetPassword(final @Valid @RequestBody ConfirmedHashDTO request);
+    MessageDTO confirmedHashCodeResetPassword(final @Valid @RequestBody ConfirmedHashDTO request);
 
     @PutMapping("/redefinition-password")
     @ResponseStatus(HttpStatus.CREATED)

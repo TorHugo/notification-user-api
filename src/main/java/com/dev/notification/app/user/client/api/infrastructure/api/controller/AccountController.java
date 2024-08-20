@@ -37,13 +37,13 @@ public class AccountController implements AccountAPI {
     }
 
     @Override
-    public MessageDTO forgetPassword(final EmailAccountDTO request) {
+    public MessageDTO sendHashCodeResetPassword(final EmailAccountDTO request) {
         resetPassword.execute(request.email());
         return new MessageDTO("Please check your email as a verification code has been sent to it.");
     }
 
     @Override
-    public MessageDTO forgetPassword(final ConfirmedHashDTO request) {
+    public MessageDTO confirmedHashCodeResetPassword(final ConfirmedHashDTO request) {
         resetPasswordService.confirmed(request);
         return new MessageDTO("Please check your email, a temporary password with an expiration date of 15 minutes has been sent so you can reset it.");
     }

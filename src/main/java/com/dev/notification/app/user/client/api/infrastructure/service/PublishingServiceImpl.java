@@ -59,10 +59,10 @@ public class PublishingServiceImpl implements PublishingService<EventPublishing>
             case CONFIRMED_RESET_PASSWORD_EVENT:
                 final var confirmedEvent = (EncryptedPassword) dto.object();
                 eventPublisher.publishEvent(new ConfirmedResetPasswordEvent(this, dto.account().getIdentifier(), gson.toJson(confirmedEvent)));
+                createNotification.execute(dto.account().getEmail(), "testing","temporary-password", List.of(new Parameter("temporary-password", confirmedEvent.encryptedPassword())));
                 sendEventRestPasswordTopic.execute(
                         RedefinitionPasswordTopic.builder().email(dto.account().getEmail()).password(confirmedEvent.encryptedPassword()).build()
                 );
-                createNotification.execute(dto.account().getEmail(), "testing","temporary-password", List.of(new Parameter("temporary-password", confirmedEvent.encryptedPassword())));
                 break;
             case REDEFINITION_PASSWORD_EVENT:
                 final var redefinitionEvent = (EncryptedPassword) dto.object();
