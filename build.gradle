@@ -19,7 +19,7 @@ jacoco {
 
 
 bootJar {
-	archiveFileName = 'user-client-api.jar'
+	archiveFileName = 'notification-user-api.jar'
 }
 
 repositories {

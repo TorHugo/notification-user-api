@@ -113,7 +113,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: torhugo/user-client-api:${{ steps.increment_version.outputs.new_tag }}
+          tags: torhugo/notification-user-api:${{ steps.increment_version.outputs.new_tag }}
 
   discord-notification:
     runs-on: ubuntu-latest
@@ -126,6 +126,6 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "Backend User-Client-API"
+          title: "notification-user-api"
           description: "Build and Deploy to Docker"
           username: GitHub Actions
