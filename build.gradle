@@ -10,7 +10,13 @@ group = 'com.dev.notification.app'
 version = 'v0.0.1'
 
 java {
-	sourceCompatibility = '21'
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+ext {
+	set('testcontainersVersion', "1.19.3")
 }
 
 jacoco {
@@ -41,7 +47,10 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter'
+//	testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+//	testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+//	testImplementation "com.redis:testcontainers-redis:2.2.2"
+//	testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.6.0'
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

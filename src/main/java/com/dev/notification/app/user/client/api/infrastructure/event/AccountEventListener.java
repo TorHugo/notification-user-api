@@ -73,6 +73,20 @@ public class AccountEventListener {
     }
 
     @EventListener
+    public void handlerResendConfirmedAccount(final ResendConfirmedAccountEvent entryEvent){
+        try {
+            final var event = Event.create(
+                    entryEvent.getAggregateIdentifier(),
+                    EventType.RESEND_CONFIRMATION_EVENT,
+                    entryEvent.getTransaction()
+            );
+            eventGateway.save(event);
+        } catch (final Exception e) {
+            throw new EventException(DEFAULT_ERROR);
+        }
+    }
+
+    @EventListener
     public void handlerConfirmedAccount(final RedefinitionPasswordEvent entryEvent){
         try {
             final var event = Event.create(

@@ -1,4 +1,4 @@
-package com.dev.notification.app.user.client.api.infrastructure.repository.redis.template;
+package com.dev.notification.app.user.client.api.infrastructure.repository.redis;
 
 import com.dev.notification.app.user.client.api.infrastructure.repository.redis.models.RedisEntity;
 import com.google.gson.Gson;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -30,10 +30,13 @@ public abstract class RedisTemplateRepository<T extends RedisEntity> {
 
     public T get(final String prefix, final String key) {
         final var json = redisTemplate.opsForValue().get(buildKeyName(prefix, key));
-        if (json == null) {
-            throw new NoSuchElementException("Value not found!");
-        }
+        if (Objects.isNull(json))
+            return null;
         return deserialize(json);
+    }
+
+    public void delete(final String prefix, final String key) {
+        redisTemplate.delete(buildKeyName(prefix, key));
     }
 
     protected String buildKeyName(final T object) {

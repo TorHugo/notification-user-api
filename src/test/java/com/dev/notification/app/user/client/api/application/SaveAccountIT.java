@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @IntegrationIT
-class CreateAccountIT {
+class SaveAccountIT {
     @Autowired
-    private CreateAccount createAccount;
+    private SaveAccount saveAccount;
 
     @Autowired
     private AccountGateway accountGateway;
@@ -29,7 +29,7 @@ class CreateAccountIT {
         // Given
         final var account = Account.create(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, false);
         // When
-        final var actualAccount = createAccount.execute(account);
+        final var actualAccount = saveAccount.execute(account);
         assertNotNull(actualAccount);
         assertNotNull(actualAccount.getIdentifier());
 

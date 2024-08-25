@@ -21,15 +21,19 @@ public interface AccountAPI {
     @ResponseStatus(HttpStatus.CREATED)
     MessageDTO confirmed(final @Valid @RequestBody ConfirmedHashDTO request);
 
+    @PostMapping("/resend-confirmation")
+    @ResponseStatus(HttpStatus.OK)
+    MessageDTO resendConfirmed(final @Valid @RequestBody EmailAccountDTO request);
+
     @PostMapping("/reset-password/send-hash")
     @ResponseStatus(HttpStatus.CREATED)
     MessageDTO sendHashCodeResetPassword(final @Valid @RequestBody EmailAccountDTO request);
 
     @PostMapping("/reset-password/confirmed")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     MessageDTO confirmedHashCodeResetPassword(final @Valid @RequestBody ConfirmedHashDTO request);
 
     @PutMapping("/redefinition-password")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     MessageDTO redefinitionPassword(final @Valid @RequestBody RedefinitionPasswordDTO request);
 }

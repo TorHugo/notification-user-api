@@ -3,6 +3,7 @@ package com.dev.notification.app.user.client.api.infrastructure.exception;
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import com.dev.notification.app.user.client.api.domain.exception.template.EventException;
 import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
+import com.dev.notification.app.user.client.api.domain.exception.template.ServiceException;
 import com.dev.notification.app.user.client.api.infrastructure.exception.models.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DomainException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse handlerRepositoryException(final DomainException ex,
-                                                        final HttpServletRequest request) {
+    public ExceptionResponse handlerDomainException(final DomainException ex,
+                                                    final HttpServletRequest request) {
+        return ExceptionResponse.builder()
+                    .timestamp(LocalDateTime.now())
+                    .status(BAD_REQUEST.value())
+                    .error(BAD_REQUEST.getReasonPhrase())
+                    .message(ex.getMessage())
+                    .path(request.getRequestURI())
+                .build();
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handlerServiceException(final ServiceException ex,
+                                                     final HttpServletRequest request) {
         return ExceptionResponse.builder()
                     .timestamp(LocalDateTime.now())
                     .status(BAD_REQUEST.value())
@@ -32,8 +46,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EventException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handlerDomainException(final EventException ex,
-                                                    final HttpServletRequest request) {
+    public ExceptionResponse handlerEventException(final EventException ex,
+                                                   final HttpServletRequest request) {
         return ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(INTERNAL_SERVER_ERROR.value())
@@ -45,8 +59,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GatewayException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handlerDomainException(final GatewayException ex,
-                                                    final HttpServletRequest request) {
+    public ExceptionResponse handlerGatewayException(final GatewayException ex,
+                                                     final HttpServletRequest request) {
         return ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(INTERNAL_SERVER_ERROR.value())

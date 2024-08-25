@@ -1,10 +1,12 @@
 package com.dev.notification.app.user.client.api.domain.entity;
 
+import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Getter
 @ToString
@@ -59,5 +61,11 @@ public class HashToken {
     public String getTime(){
         final var formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return this.expirationDate.format(formatter);
+    }
+
+    public void validateHashToken(final String expectedHashToken){
+        final var currentDate = LocalDateTime.now();
+        if (!Objects.equals(hashcode, expectedHashToken)) throw new DomainException("This hashcode is not the same as the saved one!");
+        if (expirationDate.isBefore(currentDate)) throw new DomainException("This hash-code is expired!");
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAccount {
+public class SaveAccount {
     private final AccountGateway accountGateway;
 
     public Account execute(final Account account){

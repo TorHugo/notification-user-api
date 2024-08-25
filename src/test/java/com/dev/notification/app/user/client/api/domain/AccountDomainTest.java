@@ -112,4 +112,17 @@ class AccountDomainTest {
         assertNotNull(exception);
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Should be update password with success.")
+    void t7(){
+        // Given
+        final var newPassword = "UpdatePassword1234#";
+        // When
+        final var account = Account.create(FIRST_NAME, LAST_NAME, CORRECT_EMAIL, CORRECT_PASSWORD, false);
+        account.updatePassword(newPassword);
+        // Then
+        assertNotNull(account);
+        assertEquals(newPassword, account.getPassword());
+    }
 }

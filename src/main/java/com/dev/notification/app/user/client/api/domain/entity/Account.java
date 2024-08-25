@@ -93,9 +93,13 @@ public class Account {
     }
 
     public void isConfirmedAccount(){
-        if (confirmed) throw new DomainException("This account is already confirmed!");
+        this.isValidConfirmedAccount();
         this.confirmed = true;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void isValidConfirmedAccount(){
+        if (confirmed) throw new DomainException("This account is already confirmed!");
     }
 
     public String getFullName(){
