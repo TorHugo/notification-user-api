@@ -1,13 +1,8 @@
 package com.dev.notification.app.user.client.api.infrastructure.service;
 
-import com.dev.notification.app.user.client.api.application.FindAccountWithThrows;
-import com.dev.notification.app.user.client.api.application.SaveAccount;
-import com.dev.notification.app.user.client.api.application.FindAccount;
-import com.dev.notification.app.user.client.api.application.SaveHashToken;
-import com.dev.notification.app.user.client.api.application.FindHashToken;
+import com.dev.notification.app.user.client.api.application.*;
 import com.dev.notification.app.user.client.api.domain.entity.Account;
 import com.dev.notification.app.user.client.api.domain.enums.EventType;
-import com.dev.notification.app.user.client.api.domain.exception.template.GatewayException;
 import com.dev.notification.app.user.client.api.domain.exception.template.ServiceException;
 import com.dev.notification.app.user.client.api.domain.service.AccountService;
 import com.dev.notification.app.user.client.api.domain.service.EncryptionService;
@@ -48,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Account create(final CreateAccountDTO dto) {
         final var existingAccount = findAccount.execute(dto.email());
-        if (Objects.nonNull(existingAccount)) throw new GatewayException("This account already exists! With email:", dto.email());
+        if (Objects.nonNull(existingAccount)) throw new ServiceException("This account already exists! With email!");
         final var account = Account.create(dto.firstName(), dto.lastName(), dto.email(), encryptionService.encryption(dto.password()), false);
         final var hashToken = saveHashToken.execute(prefix, account.getIdentifier(), digits, milliseconds);
         publishingService.publish(EventPublishing.builder()

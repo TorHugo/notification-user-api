@@ -16,7 +16,7 @@ public class EncryptionServiceImpl implements EncryptionService {
 
     @Override
     public boolean matches(final String expectedValue,
-                           final String actualValue) {
-        return BCrypt.checkpw(expectedValue, actualValue);
+                           final String hashed) {
+        return BCrypt.checkpw(expectedValue, hashed);
     }
 }

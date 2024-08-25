@@ -20,6 +20,7 @@ public class NotificationEntity {
     private String identifier;
     private String contact;
     private String subject;
+    @Column(columnDefinition = "TEXT")
     private String template;
     @Column(columnDefinition = "TEXT")
     private String parameters;

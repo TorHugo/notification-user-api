@@ -2,14 +2,12 @@ package com.dev.notification.app.user.client.api.domain.entity;
 
 import com.dev.notification.app.user.client.api.domain.exception.template.DomainException;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Getter
-@ToString
 public class HashToken {
     private final String prefix;
     private final String key;

@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationIT
-class DeleteHashTokenIT {
+class FindHashTokenIT {
 
     static final String PREFIX_CONFIRMED_ACCOUNT = "confirmed-account";
     static final String KEY_CONFIRMED_ACCOUNT = "key-account";
@@ -25,24 +24,25 @@ class DeleteHashTokenIT {
     private HashTokenGateway hashTokenGateway;
 
     @Autowired
-    private DeleteHashToken deleteHashToken;
+    private FindHashToken findHashToken;
 
     @Test
-    @DisplayName("Should delete HashToken with success!")
+    @DisplayName("Should find HashToken with success!")
     void t1() {
         // given
         final var hashToken = HashToken.create(PREFIX_CONFIRMED_ACCOUNT, KEY_CONFIRMED_ACCOUNT, HASH_CODE, EXPIRATION_DATE);
         hashTokenGateway.save(hashToken);
 
-        final var savedHashToken = hashTokenGateway.get(PREFIX_CONFIRMED_ACCOUNT, KEY_CONFIRMED_ACCOUNT);
-        assertNotNull(savedHashToken);
-
         // when
-        deleteHashToken.execute(PREFIX_CONFIRMED_ACCOUNT, KEY_CONFIRMED_ACCOUNT);
+        final var savedHashToken = findHashToken.execute(PREFIX_CONFIRMED_ACCOUNT, KEY_CONFIRMED_ACCOUNT);
 
         // then
-        final var deletedHashToken = hashTokenGateway.get(PREFIX_CONFIRMED_ACCOUNT, KEY_CONFIRMED_ACCOUNT);
-        assertNull(deletedHashToken);
+        assertNotNull(savedHashToken);
+        assertEquals(hashToken.getHashcode(), savedHashToken.getHashcode());
+        assertEquals(hashToken.getKey(), savedHashToken.getKey());
+        assertEquals(hashToken.getPrefix(), savedHashToken.getPrefix());
+        assertEquals(hashToken.getExpirationDate(), savedHashToken.getExpirationDate());
+        assertEquals(hashToken.getCreatedAt(), savedHashToken.getCreatedAt());
     }
 }
 

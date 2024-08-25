@@ -40,8 +40,6 @@ public class Notification {
             final List<Parameter> parameters
     ){
         if (Objects.isNull(contact) || contact.isEmpty()) throw new DomainException("Contact must be not null or empty!");
-        // TODO: refactoring this validation
-        // if (Objects.isNull(subject) || subject.isEmpty()) throw new DomainException("Template must be not null or empty!");
         if (Objects.isNull(template) || template.isEmpty()) throw new DomainException("Template must be not null or empty!");
         return new Notification(
                 IdentifierUtils.unique(),

@@ -7,7 +7,4 @@ public class GatewayException extends DomainExceptionHandler {
                             final String parameter) {
         super(message, parameter);
     }
-    public GatewayException(final String message) {
-        super(message);
-    }
 }

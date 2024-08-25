@@ -56,7 +56,7 @@ class AccountControllerIT {
 
         // When
         final var response = testRestTemplate.exchange(
-                buildUrl(PATH_CREATE_ACCOUNT),
+                buildUrl(),
                 HttpMethod.POST,
                 request,
                 AccountSuccessfullyDTO.class
@@ -86,7 +86,7 @@ class AccountControllerIT {
 
         // When
         final var response = testRestTemplate.exchange(
-                buildUrl(PATH_CREATE_ACCOUNT),
+                buildUrl(),
                 HttpMethod.POST,
                 request,
                 ExceptionResponse.class
@@ -100,12 +100,12 @@ class AccountControllerIT {
     }
 
     @Test
-    @DisplayName("Should throws a exception (@GatewayException) when account already exists, and return http status: 500.")
+    @DisplayName("Should throws a exception (@ServiceException) when account already exists, and return http status: 400.")
     void t3(){
         // Given
         final var account = Account.create("John", "Doe", "john.doe@example.com", "Password@123", false);
         accountGateway.save(account);
-        final var expectedMessageError = "This account already exists! With email:";
+        final var expectedMessageError = "This account already exists! With email!";
         final var dto = CreateAccountDTO.builder()
                 .firstName("John")
                 .lastName("Doe")
@@ -120,7 +120,7 @@ class AccountControllerIT {
 
         // When
         final var response = testRestTemplate.exchange(
-                buildUrl(PATH_CREATE_ACCOUNT),
+                buildUrl(),
                 HttpMethod.POST,
                 request,
                 ExceptionResponse.class
@@ -129,11 +129,11 @@ class AccountControllerIT {
         // Then
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertTrue(response.getStatusCode().is5xxServerError());
+        assertTrue(response.getStatusCode().is4xxClientError());
         assertEquals(expectedMessageError, response.getBody().message());
     }
 
-    private String buildUrl(final String path){
-        return HOST + port + path;
+    private String buildUrl(){
+        return HOST + port + AccountControllerIT.PATH_CREATE_ACCOUNT;
     }
 }
